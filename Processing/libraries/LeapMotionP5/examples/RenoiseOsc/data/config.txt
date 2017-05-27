@@ -1,0 +1,5 @@
+clientOSCAddress: 127.0.0.1
+renoiseAddress: 127.0.0.1
+clientOSCPort: 8081
+renoiseOSCPort:7013
+convertTouchOSC: yes
