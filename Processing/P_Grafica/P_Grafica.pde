@@ -164,6 +164,10 @@ void draw() {
   //-------------------------------------------------------------//
   //## ENVIO DE ORDENES A RESOLUME CON OSC ##//
   //-------------------------------------------------------------//
+  //Ejemplos de mensajes
+  // "/layer1/clip1/connect" --> selecciona clip1 de layer1
+  // "/layer1/clip1/video/effect1/param1/values" --> modifica parametro1 de efecto1 de video de clip1 en capa1
+  //-------------------------------------------------------------//
   
 
   //Se escriben mensajes para Resolume
