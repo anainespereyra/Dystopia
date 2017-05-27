@@ -181,7 +181,7 @@ void draw() {
   //## DEBUG ##//
   //-------------------------------------------------------------//
   
-  println( "val1: "+val1 );
+  //println( "val1: "+val1 );
   //println( "val2: "+val2 );
   //println( "val3: "+val3 );
   //println( "val4: "+val4 );
