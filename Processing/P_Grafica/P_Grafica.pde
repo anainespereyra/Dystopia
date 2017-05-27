@@ -138,7 +138,7 @@ void draw() {
   //-------------------------------------------------------------//
   
   //Funcion generacion particulas con arduino (distancia)
-  float opacidad = map(val1, 0, MAX_DISTANCE, 0, 100);
+  float opacidad = map(float(val2), 0, float(MAX_DISTANCE), 0, 100);
   opacidad = opacidad - 10;
   for(n=0; n<530; n+=10) {
     stroke(150, opacidad);
@@ -167,7 +167,7 @@ void draw() {
   
   //Se escriben mensajes para Resolume
   myMessage.setAddrPattern("/layer2/clip7/video/effect1/param1/values");
-  myMessage.add(map(float(val2), 0.0, float(MAX_DISTANCE), 0.0, 1.0));
+  myMessage.add(map(float(val1), 0.0, float(MAX_DISTANCE), 0.0, 1.0));
   myBundle.add(myMessage);
   myMessage.clear();
   
@@ -182,10 +182,10 @@ void draw() {
   //-------------------------------------------------------------//
   
   println( "val1: "+val1 );
-  println( "val2: "+val2 );
-  println( "val3: "+val3 );
-  println( "val4: "+val4 );
-  println( "val5: "+val5 );
+  //println( "val2: "+val2 );
+  //println( "val3: "+val3 );
+  //println( "val4: "+val4 );
+  //println( "val5: "+val5 );
   
   //-------------------------------------------------------------//
 
