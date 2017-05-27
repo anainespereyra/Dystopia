@@ -68,10 +68,10 @@ void setup() {
   //-------------------------------------------------------------//
   
   String port1 = Serial.list()[0]; 
-  //String port2 = Serial.list()[1];
+  String port2 = Serial.list()[1];
   
   ArduinoPort1 = new Serial(this, port1, 9600);
-  //ArduinoPort2 = new Serial(this, port2, 9600);
+  ArduinoPort2 = new Serial(this, port2, 9600);
   
   valueArduino1 = 0;
   valueArduino2 = 0;
@@ -83,8 +83,8 @@ void setup() {
   //## LEAP MOTION ##//
   //-------------------------------------------------------------//
   
-  //leap = new LeapMotion(this).allowGestures(); 
-  //leap = new LeapMotion(this);
+  leap = new LeapMotion(this).allowGestures(); 
+  leap = new LeapMotion(this);
   
   posX = 0;
   posY = 0;
@@ -98,10 +98,10 @@ void setup() {
   //-------------------------------------------------------------//
   // Se crean conexiones UDP para enviar a pc de graficos
   udp1 = new UDP( this, PuertoLocal1 );
-  //udp2 = new UDP( this, PuertoLocal2 );
-  //udp3 = new UDP( this, PuertoLocal3 );
-  //udp4 = new UDP( this, PuertoLocal4 );
-  //udp5 = new UDP( this, PuertoLocal5 );
+  udp2 = new UDP( this, PuertoLocal2 );
+  udp3 = new UDP( this, PuertoLocal3 );
+  udp4 = new UDP( this, PuertoLocal4 );
+  udp5 = new UDP( this, PuertoLocal5 );
   //-------------------------------------------------------------//
 
 
@@ -118,14 +118,13 @@ void draw() {
   if ( ArduinoPort1.available() > 0) {  // If data is available,
     valueArduino1 = ArduinoPort1.read();         // read it and store it in val
   }
-  /*if ( ArduinoPort2.available() > 0) {  // If data is available,
+  if ( ArduinoPort2.available() > 0) {  // If data is available,
     valueArduino2 = ArduinoPort2.read();         // read it and store it in val
-  }*/
+  }
   
   //se pasa a string para enviar la data
-  //float temp = map(valueArduino1, 0, 100, 0, 254);
   String message1  = str(valueArduino1);
-  //String message2  = str(valueArduino2);
+  String message2  = str(valueArduino2);
   
   //-------------------------------------------------------------//
   
@@ -135,7 +134,7 @@ void draw() {
   //-------------------------------------------------------------//
   
   
-  /*for (Hand hand : leap.getHands ()) {
+  for (Hand hand : leap.getHands ()) {
 
     PVector handPosition = hand.getPosition();
     
@@ -151,7 +150,7 @@ void draw() {
   
   String message3  = str(m3);
   String message4  = str(m4);
-  String message5  = str(m5);*/
+  String message5  = str(m5);
   
   //-------------------------------------------------------------//
   
@@ -161,23 +160,23 @@ void draw() {
   //-------------------------------------------------------------//
   
   udp1.send( message1, ipRemota, puertoRemoto ); //arduino
-  //udp2.send( message2, ipRemota, puertoRemoto ); //arduino
-  //udp3.send( message3, ipRemota, puertoRemoto ); //leap
-  //udp4.send( message4, ipRemota, puertoRemoto ); //leap
-  //udp5.send( message5, ipRemota, puertoRemoto ); //leap
+  udp2.send( message2, ipRemota, puertoRemoto ); //arduino
+  udp3.send( message3, ipRemota, puertoRemoto ); //leap
+  udp4.send( message4, ipRemota, puertoRemoto ); //leap
+  udp5.send( message5, ipRemota, puertoRemoto ); //leap
   //-------------------------------------------------------------//
   
   
   //-------------------------------------------------------------//
   //## DEBUG ##//
   //-------------------------------------------------------------//
-  
+  /*
   println("Arduino1: " + valueArduino1);
-  /*println("Arduino2: " + valueArduino2);
+  println("Arduino2: " + valueArduino2);
   println("POS X = " + posX);
   println("POS Y = " + posY);
   println("num dedos = " + numF);
-  */
+  
   //-------------------------------------------------------------//
 
     

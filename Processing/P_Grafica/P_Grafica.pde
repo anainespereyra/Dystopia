@@ -11,14 +11,14 @@
 import hypermedia.net.*; //UDP
 import oscP5.*; //OSC
 import netP5.*; //OSC
-//import codeanticode.syphon.*;
+import codeanticode.syphon.*; //Syphon
 //-------------------------------------------------------------//
 
 //-------------------------------------------------------------//
 //##CONECTIVIDAD##//
 //-------------------------------------------------------------//
 //Para conexion con Syphon
-//SyphonServer server;
+SyphonServer server;
 
 //Para conexion OSC con Resolume
 //Direccion ip de la computadora a la que le mandaremos mensajes (donde esta el Resolume)
@@ -92,7 +92,7 @@ void setup() {
   udp.listen( true );
   
   //syphone
-  //server = new SyphonServer(this, "Processing Syphon");
+  server = new SyphonServer(this, "Processing Syphon");
   //-------------------------------------------------------------//
   
   //-------------------------------------------------------------//
@@ -138,7 +138,7 @@ void draw() {
   //-------------------------------------------------------------//
   
   //Funcion generacion particulas con arduino (distancia)
-  float opacidad = map(float(val2), 0, float(MAX_DISTANCE), 0, 100);
+  float opacidad = map(float(val1), 0, float(MAX_DISTANCE), 0, 100);
   opacidad = opacidad - 10;
   for(n=0; n<530; n+=10) {
     stroke(150, opacidad);
@@ -156,7 +156,7 @@ void draw() {
   //-------------------------------------------------------------//
      
   //envio pantalla a Resolume   
-  //server.sendScreen();
+  server.sendScreen();
   //-------------------------------------------------------------//
   
   
@@ -165,9 +165,10 @@ void draw() {
   //## ENVIO DE ORDENES A RESOLUME CON OSC ##//
   //-------------------------------------------------------------//
   
+
   //Se escriben mensajes para Resolume
-  myMessage.setAddrPattern("/layer2/clip7/video/effect1/param1/values");
-  myMessage.add(map(float(val1), 0.0, float(MAX_DISTANCE), 0.0, 1.0));
+  myMessage.setAddrPattern("/layer1/clip1/video/opacity/values");
+  myMessage.add(map(float(val2), 0.0, float(MAX_DISTANCE), 0.0, 1.0));
   myBundle.add(myMessage);
   myMessage.clear();
   
@@ -180,13 +181,13 @@ void draw() {
   //-------------------------------------------------------------//
   //## DEBUG ##//
   //-------------------------------------------------------------//
-  
-  //println( "val1: "+val1 );
-  //println( "val2: "+val2 );
-  //println( "val3: "+val3 );
-  //println( "val4: "+val4 );
-  //println( "val5: "+val5 );
-  
+  /*
+  println( "val1: "+val1 );
+  println( "val2: "+val2 );
+  println( "val3: "+val3 );
+  println( "val4: "+val4 );
+  println( "val5: "+val5 );
+  */
   //-------------------------------------------------------------//
 
 }
