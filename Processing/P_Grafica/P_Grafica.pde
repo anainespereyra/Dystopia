@@ -64,7 +64,7 @@ int MAX_DISTANCE = 50; //CAMBIAR TAMBIEN EN CODIGO ARDUINO
 float t;
 int[] numF = new int[5];
 int n;
-Vol[][] p = new Vol[100][100];
+Vol[][] p = new Vol[150][150];
 //-------------------------------------------------------------//
 
 
