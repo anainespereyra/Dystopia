@@ -24,6 +24,7 @@ int PuertoLocal2 = 7200; //arduino
 int PuertoLocal3 = 7300; //leap
 int PuertoLocal4 = 7400; //leap
 int PuertoLocal5 = 7500; //leap
+int PuertoLocal6 = 7600; //leap
 
 //Puerto que recibe datos en PC de graficos
 int puertoRemoto = 6100;
@@ -32,7 +33,8 @@ int puertoRemoto = 6100;
 String ipRemota = "localhost";
 
 //Conexiones UDP
-UDP udp1, udp2, udp3, udp4, udp5;
+UDP udp1, udp2, udp3, udp4, udp5, udp6;
+
 //-------------------------------------------------------------//
 
 //-------------------------------------------------------------//
@@ -55,11 +57,9 @@ LeapMotion leap;
 
 float posX;
 float posY;
+int swipe = 0;
 int numF;
 //-------------------------------------------------------------//
-
-
-
 
 void setup() {
   
@@ -67,14 +67,14 @@ void setup() {
   //## ARDUINO ##//
   //-------------------------------------------------------------//
   
-  String port1 = Serial.list()[0]; 
-  String port2 = Serial.list()[1];
+  //String port1 = Serial.list()[0]; 
+  //String port2 = Serial.list()[1];
   
-  ArduinoPort1 = new Serial(this, port1, 9600);
-  ArduinoPort2 = new Serial(this, port2, 9600);
+  //ArduinoPort1 = new Serial(this, port1, 9600);
+  //ArduinoPort2 = new Serial(this, port2, 9600);
   
-  valueArduino1 = 0;
-  valueArduino2 = 0;
+  //valueArduino1 = 0;
+  //valueArduino2 = 0;
   //-------------------------------------------------------------//
   
   
@@ -102,6 +102,7 @@ void setup() {
   udp3 = new UDP( this, PuertoLocal3 );
   udp4 = new UDP( this, PuertoLocal4 );
   udp5 = new UDP( this, PuertoLocal5 );
+  udp6 = new UDP( this, PuertoLocal6 );
   //-------------------------------------------------------------//
 
 
@@ -115,6 +116,8 @@ void draw() {
   //-------------------------------------------------------------//
 
   //Recepcion datos de Arduino
+  
+  /*
   if ( ArduinoPort1.available() > 0) {  // If data is available,
     valueArduino1 = ArduinoPort1.read();         // read it and store it in val
   }
@@ -125,7 +128,7 @@ void draw() {
   //se pasa a string para enviar la data
   String message1  = str(valueArduino1);
   String message2  = str(valueArduino2);
-  
+  */
   //-------------------------------------------------------------//
   
   
@@ -144,14 +147,15 @@ void draw() {
      
   }
   
+  
   int m3 = int(posX);
   int m4 = int(posY);
   int m5 = int(numF);
   
+  
   String message3  = str(m3);
   String message4  = str(m4);
-  String message5  = str(m5);
-  
+  String message5  = str(m5);  
   //-------------------------------------------------------------//
   
   
@@ -159,11 +163,12 @@ void draw() {
   //## ENVIO DE MENSAJES A ORDENADOR DE GRAFICOS ##//
   //-------------------------------------------------------------//
   
-  udp1.send( message1, ipRemota, puertoRemoto ); //arduino
-  udp2.send( message2, ipRemota, puertoRemoto ); //arduino
+  //udp1.send( message1, ipRemota, puertoRemoto ); //arduino
+  //udp2.send( message2, ipRemota, puertoRemoto ); //arduino
   udp3.send( message3, ipRemota, puertoRemoto ); //leap
   udp4.send( message4, ipRemota, puertoRemoto ); //leap
   udp5.send( message5, ipRemota, puertoRemoto ); //leap
+  
   //-------------------------------------------------------------//
   
   
@@ -178,8 +183,37 @@ void draw() {
   println("num dedos = " + numF);
   */
   //-------------------------------------------------------------//
-
-  println("POS Y = " + posY);
-  println("num dedos = " + numF);
     
+}
+
+void leapOnSwipeGesture(SwipeGesture g, int state){
+  
+  String message6 = str(0);
+  PVector direction        = g.getDirection();
+
+  switch(state){
+    case 1: // Start
+      break;
+    case 2: // Update
+      break;
+    case 3: // Stop
+      //println("Posicio inicial" + positionStart);
+      //println("Posicio actual" + position);
+      println("DIRECCIÓ: " + direction.x);
+      if (direction.x >= 0){
+          //Moviment DRETA
+          println("DRETA");
+         // println("SwipeGesture: " + id);
+         int m6 = 1;
+         message6  = str(m6);
+      }else{
+          println("ESQUERRA");
+          //println("SwipeGesture: " + id);
+          int m6 = 2;
+          message6  = str(m6);
+      }
+      break;
+  }
+  udp6.send( message6, ipRemota, puertoRemoto ); //leap-swipe
+  
 }
