@@ -176,7 +176,7 @@ void draw() {
   println("POS X = " + posX);
   println("POS Y = " + posY);
   println("num dedos = " + numF);
-  
+  */
   //-------------------------------------------------------------//
 
     

@@ -22,6 +22,7 @@ uint8_t currentSensor = 0;          // Keeps track of which sensor is active.
 NewPing sonar[SONAR_NUM] = {
   NewPing(8, 9, MAX_DISTANCE),
   NewPing(6, 7, MAX_DISTANCE)
+  
 };
 
 
