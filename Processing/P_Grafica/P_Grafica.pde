@@ -11,14 +11,14 @@
 import hypermedia.net.*; //UDP
 import oscP5.*; //OSC
 import netP5.*; //OSC
-//import codeanticode.syphon.*; //Syphon
+import codeanticode.syphon.*; //Syphon
 //-------------------------------------------------------------//
 
 //-------------------------------------------------------------//
 //##CONECTIVIDAD##//
 //-------------------------------------------------------------//
 //Para conexion con Syphon
-//SyphonServer server;
+SyphonServer server;
 
 //Para conexion OSC con Resolume
 //Direccion ip de la computadora a la que le mandaremos mensajes (donde esta el Resolume)
@@ -67,13 +67,13 @@ int MAX_DISTANCE = 50; //CAMBIAR TAMBIEN EN CODIGO ARDUINO
 float t;
 int[] numF = new int[5];
 int n;
-Vol[][] p = new Vol[50][50];
+Vol[][] p = new Vol[70][70];
 //-------------------------------------------------------------//
 
 
 
 void settings(){
-  size(1920, 530, P2D);
+  size(1920, 1080, P2D);
   PJOGL.profile=1;
 }
 
@@ -95,7 +95,7 @@ void setup() {
   udp.listen( true );
   
   //syphone
-  //server = new SyphonServer(this, "Processing Syphon");
+  server = new SyphonServer(this, "Processing Syphon");
   //-------------------------------------------------------------//
   
   //-------------------------------------------------------------//
@@ -161,7 +161,7 @@ void draw() {
   //-------------------------------------------------------------//
      
   //envio pantalla a Resolume   
-  //server.sendScreen();
+  server.sendScreen();
   //-------------------------------------------------------------//
   
   
@@ -173,18 +173,25 @@ void draw() {
   // "/layer1/clip1/connect" --> selecciona clip1 de layer1
   // "/layer1/clip1/video/effect1/param1/values" --> modifica parametro1 de efecto1 de video de clip1 en capa1
   //-------------------------------------------------------------//
+  ///activeclip/video/effect1/param1/values
   
 
   //Se escriben mensajes para Resolume
-  myMessage.setAddrPattern("/layer1/clip1/video/opacity/values");
+  //OPACIDAD DE LAS LINEAS (ARDUINO)
+  myMessage.setAddrPattern("/layer2/clip1/video/opacity/values");
   myMessage.add(map(float(val2), 0.0, float(MAX_DISTANCE), 0.0, 1.0));
+  myBundle.add(myMessage);
+  myMessage.clear();
+  //VELOCIDAD DE DYSTORPIA
+  myMessage.setAddrPattern("/layer3/clip1/video/effect1/param1/values");
+  myMessage.add(map(float(val1), 0.0, float(MAX_DISTANCE), 0.0, 1.0));
   myBundle.add(myMessage);
   myMessage.clear();
   
   if (val6 != 0){
     if (val6 == 1){
-      myMessage.setAddrPattern("/layer1/clip4/connect");
-      //myMessage.add(map(float(val2), 0.0, float(MAX_DISTANCE), 0.0, 1.0));
+      myMessage.setAddrPattern("/layer4/clip1/connect");
+      myMessage.add(1);
       myBundle.add(myMessage);
       myMessage.clear();
       /*myMessage.setAddrPattern("/layer1/clip1/connect");
@@ -195,8 +202,9 @@ void draw() {
     }else{
         if (val6 == 2){
           println("HAS ENTRAT AL VAL == 2");
-          myMessage.setAddrPattern("/layer1/clip5/connect");
+          myMessage.setAddrPattern("/layer4/clip2/connect");
           //myMessage.add(map(float(val2), 0.0, float(MAX_DISTANCE), 0.0, 1.0));
+          myMessage.add(1);
           myBundle.add(myMessage);
           myMessage.clear();
           /*myMessage.setAddrPattern("/layer1/clip/connect");
@@ -205,11 +213,6 @@ void draw() {
           val6 = 0;
         }
     }
-  } else {
-    myMessage.setAddrPattern("/layer1/clip2/connect");
-    myBundle.add(myMessage);
-    myMessage.clear();
-    
   }
   
   
