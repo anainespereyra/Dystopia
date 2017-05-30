@@ -71,7 +71,7 @@ void setup() {
   String port2 = Serial.list()[1];
   
   ArduinoPort1 = new Serial(this, port1, 9600);
-  ArduinoPort2 = new Serial(this, port2, 9600);
+  //ArduinoPort2 = new Serial(this, port2, 9600);
   
   valueArduino1 = 0;
   valueArduino2 = 0;
@@ -82,6 +82,7 @@ void setup() {
   //-------------------------------------------------------------//
   //## LEAP MOTION ##//
   //-------------------------------------------------------------//
+  
   
   leap = new LeapMotion(this).allowGestures(); 
   leap = new LeapMotion(this);
@@ -120,10 +121,11 @@ void draw() {
   
   if ( ArduinoPort1.available() > 0) {  // If data is available,
     valueArduino1 = ArduinoPort1.read();         // read it and store it in val
-  }
+    println("holaaaaaaa: " + valueArduino1);
+  }/*
   if ( ArduinoPort2.available() > 0) {  // If data is available,
     valueArduino2 = ArduinoPort2.read();         // read it and store it in val
-  }
+  }*/
   
   //se pasa a string para enviar la data
   String message1  = str(valueArduino1);
