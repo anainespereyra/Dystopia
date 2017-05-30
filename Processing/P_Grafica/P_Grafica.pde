@@ -47,7 +47,8 @@ int PuertoRemoto2 = 7200; //arduino
 int PuertoRemoto3 = 7300; //leap 
 int PuertoRemoto4 = 7400; //leap 
 int PuertoRemoto5 = 7500; //leap 
-int PuertoRemoto6 = 7600; //leap 
+int PuertoRemoto6 = 7600; //leap swipe
+int PuertoRemoto7 = 7700; //leap circle
 
 //-------------------------------------------------------------//
 
@@ -60,6 +61,8 @@ int val3 = 0; //leap (x)
 int val4 = 0; //leap (y)
 int val5 = 0; //leap (streched Fingers)
 int val6 = 0; //leap (swipe gesture 0=none;1=right;2=left)
+int val7 = 0; //leap (swipe gesture 0=none;1=right;2=left)
+
 
 int MAX_DISTANCE = 50; //CAMBIAR TAMBIEN EN CODIGO ARDUINO
 
@@ -129,7 +132,9 @@ void receive( byte[] data, String ip, int port ) {	// <-- extended handler
   } else if (port == PuertoRemoto5) {
      val5 = int(message);
   } else if (port == PuertoRemoto6) {
-     val6 = int(message);
+     val6 = int(message); 
+  } else if (port == PuertoRemoto7) {
+     val7 = int(message);
   }
 
 }
@@ -182,12 +187,33 @@ void draw() {
   myMessage.add(map(float(val2), 0.0, float(MAX_DISTANCE), 0.0, 1.0));
   myBundle.add(myMessage);
   myMessage.clear();
-  //VELOCIDAD DE DYSTORPIA
-  myMessage.setAddrPattern("/layer3/clip1/video/effect1/param1/values");
-  myMessage.add(map(float(val1), 0.0, float(MAX_DISTANCE), 0.0, 1.0));
+  //OPACIDAD DE LAS LINEAS (ARDUINO)
+  myMessage.setAddrPattern("/layer3/clip1/video/effect1/opacity/values");
+  myMessage.add(map(float(val2), 0.0, float(MAX_DISTANCE), 0.0, 1.0));
   myBundle.add(myMessage);
   myMessage.clear();
-  
+  //VELOCIDAD DE DYSTOPIA
+  myMessage.setAddrPattern("/layer3/clip1/video/effect1/param1/values");
+  myMessage.add(map(float(val2), 0.0, float(MAX_DISTANCE), 0.0, 1.0));
+  myBundle.add(myMessage);
+  myMessage.clear();
+
+  if (val7 == 1){
+    
+    myMessage.setAddrPattern("/layer5/clip1/connect");
+      myMessage.add(1);
+      myBundle.add(myMessage);
+      myMessage.clear();         
+      val7 = 0;
+
+  }
+  if (val7 == 2){
+    myMessage.setAddrPattern("/layer5/clip2/connect");
+      myMessage.add(1);
+      myBundle.add(myMessage);
+      myMessage.clear();
+      val7 = 0;
+  }
   if (val6 != 0){
     if (val6 == 1){
       myMessage.setAddrPattern("/layer4/clip1/connect");
