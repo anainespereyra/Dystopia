@@ -25,15 +25,16 @@ int PuertoLocal3 = 7300; //leap
 int PuertoLocal4 = 7400; //leap
 int PuertoLocal5 = 7500; //leap
 int PuertoLocal6 = 7600; //leap
+int PuertoLocal7 = 7700; //leap
 
 //Puerto que recibe datos en PC de graficos
 int puertoRemoto = 6100;
 
 //Direccion ip de la computadora a la que le mandaremos mensajes
-String ipRemota = "localhost";
+String ipRemota = "172.20.10.2";
 
 //Conexiones UDP
-UDP udp1, udp2, udp3, udp4, udp5, udp6;
+UDP udp1, udp2, udp3, udp4, udp5, udp6, udp7;
 
 //-------------------------------------------------------------//
 
@@ -71,7 +72,7 @@ void setup() {
   String port2 = Serial.list()[1];
   
   ArduinoPort1 = new Serial(this, port1, 9600);
-  //ArduinoPort2 = new Serial(this, port2, 9600);
+  ArduinoPort2 = new Serial(this, port2, 9600);
   
   valueArduino1 = 0;
   valueArduino2 = 0;
@@ -104,6 +105,7 @@ void setup() {
   udp4 = new UDP( this, PuertoLocal4 );
   udp5 = new UDP( this, PuertoLocal5 );
   udp6 = new UDP( this, PuertoLocal6 );
+  udp7 = new UDP( this, PuertoLocal7 );
   //-------------------------------------------------------------//
 
 
@@ -122,10 +124,11 @@ void draw() {
   if ( ArduinoPort1.available() > 0) {  // If data is available,
     valueArduino1 = ArduinoPort1.read();         // read it and store it in val
     println("holaaaaaaa: " + valueArduino1);
-  }/*
+  }
   if ( ArduinoPort2.available() > 0) {  // If data is available,
     valueArduino2 = ArduinoPort2.read();         // read it and store it in val
-  }*/
+    println("ADIOS: " + valueArduino1);
+  }
   
   //se pasa a string para enviar la data
   String message1  = str(valueArduino1);
@@ -178,8 +181,8 @@ void draw() {
   //## DEBUG ##//
   //-------------------------------------------------------------//
   
-  println("Arduino1: " + valueArduino1);
-  println("Arduino2: " + valueArduino2);
+  //println("Arduino1: " + valueArduino1);
+  //println("Arduino2: " + valueArduino2);
   //println("POS X = " + posX);
   //println("POS Y = " + posY);
   //println("num dedos = " + numF);
@@ -220,4 +223,45 @@ void leapOnSwipeGesture(SwipeGesture g, int state){
   udp6.send( message6, ipRemota, puertoRemoto ); //leap-swipe
   
   
+}
+
+void leapOnCircleGesture(CircleGesture g, int state){
+
+  float   durationSeconds  = g.getDurationInSeconds();
+  int     direction        = g.getDirection();
+  
+  String message7;
+  int m7 = 0;
+  message7 = str(m7);
+
+  /*switch(state){
+    case 1: // Start
+      break;
+    case 2: // Update
+      break;
+    case 3: // Stop
+      //println("CircleGesture: " + id);
+      break;
+  }*/
+
+  switch(direction){
+    case 0: // Anticlockwise/Left gesture
+     //Anticlockwise (left)
+      println("ANTICLOCKWISE (LEFT) ");
+      println("Circle Gesture Direction: " + direction);
+      println("Duration" + durationSeconds*100); //microseconds
+      m7 = 2;
+      message7  = str(m7);
+      break;
+    case 1: // Clockwise/Right gesture
+            //Clockwise (right)
+      println("CLOCKWISE (RIGHT) ");
+      println("Circle Gesture Direction: " + direction);
+      println("Duration" + durationSeconds*100); //microseconds
+      m7 = 1;
+      message7  = str(m7);
+      break;
+  }
+  udp7.send( message7, ipRemota, puertoRemoto ); //leap-swipe
+  m7 = 0;
 }

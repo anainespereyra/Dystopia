@@ -11,14 +11,14 @@
 import hypermedia.net.*; //UDP
 import oscP5.*; //OSC
 import netP5.*; //OSC
-import codeanticode.syphon.*; //Syphon
+//import codeanticode.syphon.*; //Syphon
 //-------------------------------------------------------------//
 
 //-------------------------------------------------------------//
 //##CONECTIVIDAD##//
 //-------------------------------------------------------------//
 //Para conexion con Syphon
-SyphonServer server;
+//SyphonServer server;
 
 //Para conexion OSC con Resolume
 //Direccion ip de la computadora a la que le mandaremos mensajes (donde esta el Resolume)
@@ -47,8 +47,7 @@ int PuertoRemoto2 = 7200; //arduino
 int PuertoRemoto3 = 7300; //leap 
 int PuertoRemoto4 = 7400; //leap 
 int PuertoRemoto5 = 7500; //leap 
-int PuertoRemoto6 = 7600; //leap swipe
-int PuertoRemoto7 = 7700; //leap circle
+int PuertoRemoto6 = 7600; //leap 
 
 //-------------------------------------------------------------//
 
@@ -61,8 +60,6 @@ int val3 = 0; //leap (x)
 int val4 = 0; //leap (y)
 int val5 = 0; //leap (streched Fingers)
 int val6 = 0; //leap (swipe gesture 0=none;1=right;2=left)
-int val7 = 0; //leap (circle gesture 0=none;1=right;2=left)
-
 
 int MAX_DISTANCE = 50; //CAMBIAR TAMBIEN EN CODIGO ARDUINO
 
@@ -70,13 +67,13 @@ int MAX_DISTANCE = 50; //CAMBIAR TAMBIEN EN CODIGO ARDUINO
 float t;
 int[] numF = new int[5];
 int n;
-Vol[][] p = new Vol[70][70];
+Vol[][] p = new Vol[50][50];
 //-------------------------------------------------------------//
 
 
 
 void settings(){
-  size(1920, 1080, P2D);
+  size(1920, 530, P2D);
   PJOGL.profile=1;
 }
 
@@ -98,7 +95,7 @@ void setup() {
   udp.listen( true );
   
   //syphone
-  server = new SyphonServer(this, "Processing Syphon");
+  //server = new SyphonServer(this, "Processing Syphon");
   //-------------------------------------------------------------//
   
   //-------------------------------------------------------------//
@@ -132,9 +129,7 @@ void receive( byte[] data, String ip, int port ) {	// <-- extended handler
   } else if (port == PuertoRemoto5) {
      val5 = int(message);
   } else if (port == PuertoRemoto6) {
-     val6 = int(message); 
-  } else if (port == PuertoRemoto7) {
-     val7 = int(message);
+     val6 = int(message);
   }
 
 }
@@ -166,7 +161,7 @@ void draw() {
   //-------------------------------------------------------------//
      
   //envio pantalla a Resolume   
-  server.sendScreen();
+  //server.sendScreen();
   //-------------------------------------------------------------//
   
   
@@ -178,59 +173,30 @@ void draw() {
   // "/layer1/clip1/connect" --> selecciona clip1 de layer1
   // "/layer1/clip1/video/effect1/param1/values" --> modifica parametro1 de efecto1 de video de clip1 en capa1
   //-------------------------------------------------------------//
-  ///activeclip/video/effect1/param1/values
   
 
   //Se escriben mensajes para Resolume
-  //OPACIDAD DE LAS LINEAS (ARDUINO)
-  myMessage.setAddrPattern("/layer2/clip1/video/opacity/values");
-  myMessage.add(map(float(val1), 0.0, float(MAX_DISTANCE), 0.0, 1.0));
-  myBundle.add(myMessage);
-  myMessage.clear();
-  //OPACIDAD DE LAS LINEAS (ARDUINO)
-  myMessage.setAddrPattern("/layer3/clip1/video/effect1/opacity/values");
+  myMessage.setAddrPattern("/layer1/clip1/video/opacity/values");
   myMessage.add(map(float(val2), 0.0, float(MAX_DISTANCE), 0.0, 1.0));
   myBundle.add(myMessage);
   myMessage.clear();
-  //VELOCIDAD DE DYSTOPIA
-  myMessage.setAddrPattern("/layer3/clip1/video/effect1/param1/values");
-  myMessage.add(map(float(val2), 0.0, float(MAX_DISTANCE), 0.0, 1.0));
-  myBundle.add(myMessage);
-  myMessage.clear();
-
-  if (val7 == 1){
-    
-    myMessage.setAddrPattern("/layer5/clip1/connect");
-      myMessage.add(1);
-      myBundle.add(myMessage);
-      myMessage.clear();         
-      val7 = 0;
-
-  }
-  if (val7 == 2){
-    myMessage.setAddrPattern("/layer5/clip2/connect");
-      myMessage.add(1);
-      myBundle.add(myMessage);
-      myMessage.clear();
-      val7 = 0;
-  }
+  
   if (val6 != 0){
     if (val6 == 1){
-      myMessage.setAddrPattern("/layer4/clip1/connect");
-      myMessage.add(1);
+      myMessage.setAddrPattern("/layer1/clip4/connect");
+      //myMessage.add(map(float(val2), 0.0, float(MAX_DISTANCE), 0.0, 1.0));
       myBundle.add(myMessage);
       myMessage.clear();
       /*myMessage.setAddrPattern("/layer1/clip1/connect");
       myBundle.add(myMessage);
       myMessage.clear();*/
-      //println("HAS ENTRAT AL VAL == 1");
+      println("HAS ENTRAT AL VAL == 1");
       val6 = 0;
     }else{
         if (val6 == 2){
-          //println("HAS ENTRAT AL VAL == 2");
-          myMessage.setAddrPattern("/layer4/clip2/connect");
+          println("HAS ENTRAT AL VAL == 2");
+          myMessage.setAddrPattern("/layer1/clip5/connect");
           //myMessage.add(map(float(val2), 0.0, float(MAX_DISTANCE), 0.0, 1.0));
-          myMessage.add(1);
           myBundle.add(myMessage);
           myMessage.clear();
           /*myMessage.setAddrPattern("/layer1/clip/connect");
@@ -239,6 +205,11 @@ void draw() {
           val6 = 0;
         }
     }
+  } else {
+    myMessage.setAddrPattern("/layer1/clip2/connect");
+    myBundle.add(myMessage);
+    myMessage.clear();
+    
   }
   
   
