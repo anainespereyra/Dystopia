@@ -19,17 +19,32 @@ void setup() {
 
   // Se crea conexion
   udp = new UDP( this, puertoLocal );
+  
+   //se pasa a string para enviar la data
+    //int val = 2;
+    String message  = "xavier";
+
+    // envia mensaje
+    
+    for (int i = 0; i < 6; i++)
+    {
+      udp.send( message, ip, puertoRemoto );
+      delay(4000);
+    }
+    
 
 }
 
 
-void draw() {
+
+
+/*void draw() {
   
     //se pasa a string para enviar la data
-    int val = 2;
-    String message  = str(val);
+    //int val = 2;
+    String message  = "HOLAHOLA";
 
     // envia mensaje
     udp.send( message, ip, puertoRemoto );
 
-}
+}*/
