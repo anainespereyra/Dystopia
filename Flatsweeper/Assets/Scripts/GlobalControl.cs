@@ -11,7 +11,7 @@ public class GlobalControl : MonoBehaviour {
 
 	public static int xFichasE1N1 = 6;
 	public static int yFichasE1N1 = 11;
-	public static int minasE1N1 = 11;
+	public static int minasE1N1 = 10;
 
 	public static int xFichasE2N1 = 4;
 	public static int yFichasE2N1 = 10;
