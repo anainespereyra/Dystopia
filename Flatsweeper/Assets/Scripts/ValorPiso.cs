@@ -20,7 +20,7 @@ public class ValorPiso : MonoBehaviour {
 
 		instance = this;
 		valor = 10;
-		growVel = 5;
+		growVel = 3;
 
 		tmpS = objetoValorPiso.transform.localScale;
 		tmpC = objetoValorPiso.GetComponent<Text> ().color;
