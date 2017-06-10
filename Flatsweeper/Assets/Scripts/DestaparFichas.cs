@@ -124,7 +124,7 @@ public class DestaparFichas : MonoBehaviour {
 				Debug.Log ("PERDISTE");
 				SonidosFX.instance.reproducirSonido(SonidosFX.instance.sonidoBomba);
 				CanvasController.instance.desactivarBotones();
-				Invoke("llamarPanelPerdiste", 2);
+				Invoke("llamarPanelPerdiste", 1);
 			} else if (comprobarEdificioCompleto()){
 
 				SonidosFX.instance.reproducirSonido(SonidosFX.instance.sonidoCompletarEdificio);
@@ -143,7 +143,7 @@ public class DestaparFichas : MonoBehaviour {
 				if (cantidadEdificios == edificiosCompletos) {
 					Debug.Log ("GANASTE");
 					CanvasController.instance.desactivarBotones();
-					Invoke("llamarPanelGanaste", 2);
+					Invoke("llamarPanelGanaste", 1);
 				}
 			} else {
 
