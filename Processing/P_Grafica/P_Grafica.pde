@@ -67,11 +67,8 @@ int val5 = 0; //leap (z)
 
 int MAX_DISTANCE_ARDUINO = 50; //CAMBIAR TAMBIEN EN CODIGO ARDUINO
 
-int MIN_DISTANCE_LEAPX = 5;
-int MAX_DISTANCE_LEAPX = 85;
-int MIN_DISTANCE_LEAPY = 10; //TENER EN CUENTA QUE LA Y SE MIDE AL REVES
-int MAX_DISTANCE_LEAPY = 90;
-int MIN_DISTANCE_LEAPZ = 0;
+int MAX_DISTANCE_LEAPX = 85; 
+int MAX_DISTANCE_LEAPY = 90; //TENER EN CUENTA QUE LA Y SE MIDE AL REVES
 int MAX_DISTANCE_LEAPZ = 70;
 
 //Variables para la parte grafica
@@ -193,7 +190,7 @@ void draw() {
   
   //ARDUINO 1
   myMessage.setAddrPattern("/layer2/clip1/video/effect1/opacity/values");
-  myMessage.add(map(float(val1), 0.0, float(MAX_DISTANCE_ARDUINO), 0.0, 1.0));
+  myMessage.add(map(float(MAX_DISTANCE_ARDUINO - val1), 0.0, float(MAX_DISTANCE_ARDUINO), 0.0, 1.0));
   myBundle.add(myMessage);
   myMessage.clear();
   
@@ -204,12 +201,7 @@ void draw() {
   
   //ARDUINO 2
   myMessage.setAddrPattern("/layer4/clip1/video/param3/values");
-  myMessage.add(map(float(val2), 0.0, float(MAX_DISTANCE_ARDUINO), 0.0, 1.0));
-  myBundle.add(myMessage);
-  myMessage.clear();
-  
-  myMessage.setAddrPattern("/layer3/clip1/video/effect1/param5/values");
-  myMessage.add(map(float(val2), 0.0, float(MAX_DISTANCE_ARDUINO), 0.0, 1.0));
+  myMessage.add(map(float(MAX_DISTANCE_ARDUINO - val2), 0.0, float(MAX_DISTANCE_ARDUINO), 0.0, 1.0));
   myBundle.add(myMessage);
   myMessage.clear();
   
@@ -220,14 +212,14 @@ void draw() {
   int val4Mod = val4;
   int val5Mod = val5;
   
-  if (val4Mod < MIN_DISTANCE_LEAPY){
-    val4Mod = MIN_DISTANCE_LEAPY;
+  if (val4Mod < 0){
+    val4Mod = 0;
   }
   if (val4Mod > MAX_DISTANCE_LEAPY){
     val4Mod = MAX_DISTANCE_LEAPY;
   }
-  if (val5Mod < MIN_DISTANCE_LEAPZ){
-    val5Mod = MIN_DISTANCE_LEAPZ;
+  if (val5Mod < 0){
+    val5Mod = 0;
   }
   if (val5Mod > MAX_DISTANCE_LEAPZ){
     val5Mod = MAX_DISTANCE_LEAPZ;
@@ -236,12 +228,12 @@ void draw() {
  //La Y de Leap Motion va al reves, por eso hago max distance - val4
  
   myMessage.setAddrPattern("/layer2/clip1/video/effect2/param1/values");
-  myMessage.add(map(float(MAX_DISTANCE_LEAPY - val4Mod), float(MIN_DISTANCE_LEAPY), float(MAX_DISTANCE_LEAPY), 0.2, 1.0));
+  myMessage.add(map(float(MAX_DISTANCE_LEAPY - val4Mod), 0.0, float(MAX_DISTANCE_LEAPY), 0.2, 1.0));
   myBundle.add(myMessage);
   myMessage.clear();
   
   myMessage.setAddrPattern("/layer4/clip1/video/param8/values");
-  myMessage.add(map(float(val5Mod), float(MIN_DISTANCE_LEAPZ), float(MAX_DISTANCE_LEAPZ), 0.2, 0.7));
+  myMessage.add(map(float(val5Mod), 0.0, float(MAX_DISTANCE_LEAPZ), 0.2, 0.7));
   myBundle.add(myMessage);
   myMessage.clear();
   
