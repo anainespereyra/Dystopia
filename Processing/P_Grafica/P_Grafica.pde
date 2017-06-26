@@ -195,7 +195,7 @@ void draw() {
   myMessage.clear();
   
   myMessage.setAddrPattern("/layer5/clip1/video/opacity/values");
-  myMessage.add(map(float(val1), 0.0, float(MAX_DISTANCE_ARDUINO), 0.0, 1.0));
+  myMessage.add(map(float(MAX_DISTANCE_ARDUINO - val1), 0.0, float(MAX_DISTANCE_ARDUINO), 0.0, 1.0));
   myBundle.add(myMessage);
   myMessage.clear();
   
@@ -232,12 +232,6 @@ void draw() {
   myBundle.add(myMessage);
   myMessage.clear();
   
-  myMessage.setAddrPattern("/layer4/clip1/video/param8/values");
-  myMessage.add(map(float(val5Mod), 0.0, float(MAX_DISTANCE_LEAPZ), 0.2, 0.7));
-  myBundle.add(myMessage);
-  myMessage.clear();
-  
-
   
   /*if (val8 == 1){
       myMessage.setAddrPattern("/layer5/clip1/connect");
