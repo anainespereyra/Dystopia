@@ -59,9 +59,10 @@ int val1 = 0; //arduino1
 int val2 = 0; //arduino2
 int val3 = 0; //leap (x)
 int val4 = 0; //leap (y)
-int val5 = 0; //leap (streched Fingers)
-int val6 = 0; //leap (swipe gesture 0=none;1=right;2=left)
-int val7 = 0; //leap (circle gesture 0=none;1=right;2=left)
+int val5 = 0; //leap (z)
+//int val6 = 0; //leap (streched Fingers)
+//int val7 = 0; //leap (swipe gesture 0=none;1=right;2=left)
+//int val8 = 0; //leap (circle gesture 0=none;1=right;2=left)
 
 
 int MAX_DISTANCE = 50; //CAMBIAR TAMBIEN EN CODIGO ARDUINO
@@ -182,63 +183,70 @@ void draw() {
   
 
   //Se escriben mensajes para Resolume
-  //OPACIDAD DE LAS LINEAS (ARDUINO)
-  myMessage.setAddrPattern("/layer2/clip1/video/opacity/values");
+  
+  //ARDUINO 1
+  myMessage.setAddrPattern("/layer2/clip1/video/effect1/opacity/values");
   myMessage.add(map(float(val1), 0.0, float(MAX_DISTANCE), 0.0, 1.0));
   myBundle.add(myMessage);
   myMessage.clear();
-  //OPACIDAD DE LAS LINEAS (ARDUINO)
-  myMessage.setAddrPattern("/layer3/clip1/video/effect1/opacity/values");
+  
+  myMessage.setAddrPattern("/layer5/clip1/video/opacity/values");
+  myMessage.add(map(float(val1), 0.0, float(MAX_DISTANCE), 0.0, 1.0));
+  myBundle.add(myMessage);
+  myMessage.clear();
+  
+  //ARDUINO 2
+  myMessage.setAddrPattern("/layer4/clip1/video/param3/values");
   myMessage.add(map(float(val2), 0.0, float(MAX_DISTANCE), 0.0, 1.0));
   myBundle.add(myMessage);
   myMessage.clear();
-  //VELOCIDAD DE DYSTOPIA
-  myMessage.setAddrPattern("/layer3/clip1/video/effect1/param1/values");
+  
+  myMessage.setAddrPattern("/layer3/clip1/video/effect1/param5/values");
   myMessage.add(map(float(val2), 0.0, float(MAX_DISTANCE), 0.0, 1.0));
   myBundle.add(myMessage);
   myMessage.clear();
+  
+  //LEAP MOTION
+  myMessage.setAddrPattern("/layer2/clip1/video/effect2/param1/values");
+  myMessage.add(map(float(val4), 0.0, float(MAX_DISTANCE), 0.2, 1.0));
+  myBundle.add(myMessage);
+  myMessage.clear();
+  
 
-  if (val7 == 1){
-    
+  /*
+  if (val8 == 1){
     myMessage.setAddrPattern("/layer5/clip1/connect");
       myMessage.add(1);
       myBundle.add(myMessage);
       myMessage.clear();         
-      val7 = 0;
-
+      val8 = 0;
   }
-  if (val7 == 2){
+  if (val8 == 2){
     myMessage.setAddrPattern("/layer5/clip2/connect");
       myMessage.add(1);
       myBundle.add(myMessage);
       myMessage.clear();
-      val7 = 0;
+      val8 = 0;
   }
-  if (val6 != 0){
-    if (val6 == 1){
+  if (val7 != 0){
+    if (val7 == 1){
       myMessage.setAddrPattern("/layer4/clip1/connect");
       myMessage.add(1);
       myBundle.add(myMessage);
       myMessage.clear();
-      /*myMessage.setAddrPattern("/layer1/clip1/connect");
-      myBundle.add(myMessage);
-      myMessage.clear();*/
       //println("HAS ENTRAT AL VAL == 1");
-      val6 = 0;
+      val7 = 0;
     }else{
-        if (val6 == 2){
+        if (val7 == 2){
           //println("HAS ENTRAT AL VAL == 2");
           myMessage.setAddrPattern("/layer4/clip2/connect");
           //myMessage.add(map(float(val2), 0.0, float(MAX_DISTANCE), 0.0, 1.0));
           myMessage.add(1);
           myBundle.add(myMessage);
           myMessage.clear();
-          /*myMessage.setAddrPattern("/layer1/clip/connect");
-          myBundle.add(myMessage);
-          myMessage.clear();*/
-          val6 = 0;
+          val7 = 0;
         }
-    }
+    }*/
   }
   
   
