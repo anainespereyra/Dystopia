@@ -19,13 +19,13 @@ import de.voidplus.leapmotion.*; //Leap
 //##CONECTIVIDAD##//
 //-------------------------------------------------------------//
 //Puertos locales por los que se envian los datos
-int PuertoLocal1 = 7100; //arduino
-int PuertoLocal2 = 7200; //arduino
-int PuertoLocal3 = 7300; //leap
-int PuertoLocal4 = 7400; //leap
-int PuertoLocal5 = 7500; //leap
-int PuertoLocal6 = 7600; //leap
-int PuertoLocal7 = 7700; //leap
+int PuertoLocal1 = 7100; //arduino1
+int PuertoLocal2 = 7200; //arduino2
+int PuertoLocal3 = 7300; //leapX
+int PuertoLocal4 = 7400; //leapY
+int PuertoLocal5 = 7500; //leapZ
+//int PuertoLocal6 = 7600; //leap
+//int PuertoLocal7 = 7700; //leap
 
 //Puerto que recibe datos en PC de graficos
 int puertoRemoto = 6100;
@@ -58,6 +58,7 @@ LeapMotion leap;
 
 float posX;
 float posY;
+float posZ;
 int swipe = 0;
 int numF;
 //-------------------------------------------------------------//
@@ -90,6 +91,7 @@ void setup() {
   
   posX = 0;
   posY = 0;
+  posZ = 0;
   numF = 0;
   //-------------------------------------------------------------//
   
@@ -104,8 +106,8 @@ void setup() {
   udp3 = new UDP( this, PuertoLocal3 );
   udp4 = new UDP( this, PuertoLocal4 );
   udp5 = new UDP( this, PuertoLocal5 );
-  udp6 = new UDP( this, PuertoLocal6 );
-  udp7 = new UDP( this, PuertoLocal7 );
+  //udp6 = new UDP( this, PuertoLocal6 );
+  //udp7 = new UDP( this, PuertoLocal7 );
   //-------------------------------------------------------------//
 
 
@@ -145,7 +147,8 @@ void draw() {
     PVector handPosition = hand.getPosition();
     
      posX = handPosition.x;
-     posY = handPosition.y;
+     posY = handPosition.y;  
+     posZ = handPosition.z;
      numF = hand.getOutstretchedFingers().size();
      
   }
@@ -153,7 +156,7 @@ void draw() {
   
   int m3 = int(posX);
   int m4 = int(posY);
-  int m5 = int(numF);
+  int m5 = int(posZ);
   
   
   String message3  = str(m3);
@@ -166,11 +169,11 @@ void draw() {
   //## ENVIO DE MENSAJES A ORDENADOR DE GRAFICOS ##//
   //-------------------------------------------------------------//
   
-  udp1.send( message1, ipRemota, puertoRemoto ); //arduino
-  udp2.send( message2, ipRemota, puertoRemoto ); //arduino
-  udp3.send( message3, ipRemota, puertoRemoto ); //leap
-  udp4.send( message4, ipRemota, puertoRemoto ); //leap
-  udp5.send( message5, ipRemota, puertoRemoto ); //leap
+  udp1.send( message1, ipRemota, puertoRemoto ); //arduino1
+  udp2.send( message2, ipRemota, puertoRemoto ); //arduino2
+  udp3.send( message3, ipRemota, puertoRemoto ); //leapX
+  udp4.send( message4, ipRemota, puertoRemoto ); //leapY
+  udp5.send( message5, ipRemota, puertoRemoto ); //leapZ
   
   //-------------------------------------------------------------//
   
@@ -203,22 +206,22 @@ void leapOnSwipeGesture(SwipeGesture g, int state){
     case 3: // Stop
       //println("Posicio inicial" + positionStart);
       //println("Posicio actual" + position);
-      println("DIRECCIÓ: " + direction.x);
+      //println("DIRECCIÓ: " + direction.x);
       if (direction.x >= 0){
           //Moviment DRETA
-          println("DRETA");
+          //println("DRETA");
          // println("SwipeGesture: " + id);
          m6 = 1;
          message6  = str(m6);
       }else{
-          println("ESQUERRA");
+          //println("ESQUERRA");
           //println("SwipeGesture: " + id);
           m6 = 2;
           message6  = str(m6);
       }
       break;
   }
-  udp6.send( message6, ipRemota, puertoRemoto ); //leap-swipe
+  //udp6.send( message6, ipRemota, puertoRemoto ); //leap-swipe
   
   
 }
@@ -245,21 +248,21 @@ void leapOnCircleGesture(CircleGesture g, int state){
   switch(direction){
     case 0: // Anticlockwise/Left gesture
      //Anticlockwise (left)
-      println("ANTICLOCKWISE (LEFT) ");
-      println("Circle Gesture Direction: " + direction);
-      println("Duration" + durationSeconds*100); //microseconds
+      //println("ANTICLOCKWISE (LEFT) ");
+      //println("Circle Gesture Direction: " + direction);
+      //println("Duration" + durationSeconds*100); //microseconds
       m7 = 2;
       message7  = str(m7);
       break;
     case 1: // Clockwise/Right gesture
             //Clockwise (right)
-      println("CLOCKWISE (RIGHT) ");
-      println("Circle Gesture Direction: " + direction);
-      println("Duration" + durationSeconds*100); //microseconds
+      //println("CLOCKWISE (RIGHT) ");
+      //println("Circle Gesture Direction: " + direction);
+      //println("Duration" + durationSeconds*100); //microseconds
       m7 = 1;
       message7  = str(m7);
       break;
   }
-  udp7.send( message7, ipRemota, puertoRemoto ); //leap-swipe
+  //udp7.send( message7, ipRemota, puertoRemoto ); //leap-swipe
   m7 = 0;
 }

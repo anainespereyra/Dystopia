@@ -132,11 +132,11 @@ void receive( byte[] data, String ip, int port ) {	// <-- extended handler
      val4 = int(message);
   } else if (port == PuertoRemoto5) {
      val5 = int(message);
-  } else if (port == PuertoRemoto6) {
+  }/* else if (port == PuertoRemoto6) {
      val6 = int(message); 
   } else if (port == PuertoRemoto7) {
      val7 = int(message);
-  }
+  }*/
 
 }
 //-------------------------------------------------------------//
@@ -212,10 +212,15 @@ void draw() {
   myBundle.add(myMessage);
   myMessage.clear();
   
+  myMessage.setAddrPattern("/layer4/clip1/video/param8/values");
+  myMessage.add(map(float(val5), 0.0, float(MAX_DISTANCE), 0.2, 0.7));
+  myBundle.add(myMessage);
+  myMessage.clear();
+  
 
-  /*
-  if (val8 == 1){
-    myMessage.setAddrPattern("/layer5/clip1/connect");
+  
+  /*if (val8 == 1){
+      myMessage.setAddrPattern("/layer5/clip1/connect");
       myMessage.add(1);
       myBundle.add(myMessage);
       myMessage.clear();         
@@ -246,8 +251,8 @@ void draw() {
           myMessage.clear();
           val7 = 0;
         }
-    }*/
-  }
+    }
+  }*/
   
   
   //Envio del mensaje
