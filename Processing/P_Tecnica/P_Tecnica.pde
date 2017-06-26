@@ -24,8 +24,6 @@ int PuertoLocal2 = 7200; //arduino2
 int PuertoLocal3 = 7300; //leapX
 int PuertoLocal4 = 7400; //leapY
 int PuertoLocal5 = 7500; //leapZ
-//int PuertoLocal6 = 7600; //leap
-//int PuertoLocal7 = 7700; //leap
 
 //Puerto que recibe datos en PC de graficos
 int puertoRemoto = 6100;
@@ -34,7 +32,7 @@ int puertoRemoto = 6100;
 String ipRemota = "172.20.10.2";
 
 //Conexiones UDP
-UDP udp1, udp2, udp3, udp4, udp5, udp6, udp7;
+UDP udp1, udp2, udp3, udp4, udp5;
 
 //-------------------------------------------------------------//
 
@@ -106,8 +104,7 @@ void setup() {
   udp3 = new UDP( this, PuertoLocal3 );
   udp4 = new UDP( this, PuertoLocal4 );
   udp5 = new UDP( this, PuertoLocal5 );
-  //udp6 = new UDP( this, PuertoLocal6 );
-  //udp7 = new UDP( this, PuertoLocal7 );
+
   //-------------------------------------------------------------//
 
 
@@ -150,7 +147,8 @@ void draw() {
      posY = handPosition.y;  
      posZ = handPosition.z;
      numF = hand.getOutstretchedFingers().size();
-     
+
+    
   }
   
   
@@ -191,6 +189,10 @@ void draw() {
   //-------------------------------------------------------------//
     
 }
+
+
+
+
 
 void leapOnSwipeGesture(SwipeGesture g, int state){
   
