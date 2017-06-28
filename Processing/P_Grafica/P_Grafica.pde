@@ -241,7 +241,7 @@ void draw() {
   
   //ARDUINO 1
   myMessage.setAddrPattern("/layer2/clip1/video/effect1/opacity/values");
-  myMessage.add(map(float(MAX_DISTANCE_ARDUINO - val1), 0.0, float(MAX_DISTANCE_ARDUINO), 0.0, 1.0));
+  myMessage.add(map(float(MAX_DISTANCE_ARDUINO - val1 - 10), 0.0, float(MAX_DISTANCE_ARDUINO), 0.0, 1.0)); // el -10 es porque no llegaba a tope
   myBundle.add(myMessage);
   myMessage.clear();
   
@@ -251,15 +251,16 @@ void draw() {
   myMessage.clear();
   
   //ARDUINO 2
-  myMessage.setAddrPattern("/layer4/clip1/video/param8/values");
-  myMessage.add(map(float(MAX_DISTANCE_ARDUINO - val2), 0.0, float(MAX_DISTANCE_ARDUINO), 0.0, 1.0));
+  myMessage.setAddrPattern("/layer4/clip1/video/param5/values");
+  myMessage.add(map(float(val2), 0.0, float(MAX_DISTANCE_ARDUINO), 0.0, 1.0));
   myBundle.add(myMessage);
   myMessage.clear();
   
+  /*
   myMessage.setAddrPattern("/layer4/clip1/video/opacity/values");
   myMessage.add(map(float(MAX_DISTANCE_ARDUINO - val2), 0.0, float(MAX_DISTANCE_ARDUINO), 0.0, 0.8));
   myBundle.add(myMessage);
-  myMessage.clear();
+  myMessage.clear();*/
   
   
   
@@ -420,7 +421,7 @@ class Textura {
 //cuando mouse vaya abajo se meten los puntos a cero
 if (movimientoY < 1) {
     strokeWeight(1);
-    beginShape(LINES);
+    beginShape(POINTS);
     stroke(1);
     vertex(x, y, z);
     stroke(200);
@@ -428,7 +429,7 @@ if (movimientoY < 1) {
     endShape();
 } else {
     strokeWeight(1);
-    beginShape(LINES);
+    beginShape(POINTS);
     stroke(1);
     vertex(x, y, z);
     stroke(200);
