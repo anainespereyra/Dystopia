@@ -241,7 +241,7 @@ void draw() {
   
   //ARDUINO 1
   myMessage.setAddrPattern("/layer2/clip1/video/effect1/opacity/values");
-  myMessage.add(map(float(MAX_DISTANCE_ARDUINO - val1 - 10), 0.0, float(MAX_DISTANCE_ARDUINO), 0.0, 1.0)); // el -10 es porque no llegaba a tope
+  myMessage.add(map(float(MAX_DISTANCE_ARDUINO - val1 + 10), 0.0, float(MAX_DISTANCE_ARDUINO), 0.0, 1.0)); // el +10 es porque no llegaba a tope
   myBundle.add(myMessage);
   myMessage.clear();
   
@@ -284,7 +284,7 @@ void draw() {
   
  //La Y de Leap Motion va al reves, por eso hago max distance - val4
   myMessage.setAddrPattern("/layer2/clip1/video/effect2/param1/values");
-  myMessage.add(map(float(MAX_DISTANCE_LEAPY - val4Mod), 0.0, float(MAX_DISTANCE_LEAPY), 0.2, 1.0));
+  myMessage.add(map(float(MAX_DISTANCE_LEAPY - val4Mod), 0.0, float(MAX_DISTANCE_LEAPY), 0.2, 0.8));
   myBundle.add(myMessage);
   myMessage.clear();
   
