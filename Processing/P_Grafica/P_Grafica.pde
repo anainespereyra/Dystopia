@@ -78,6 +78,10 @@ Textura[] tex ;
 float rx = 0;
 float ry = 0;
 
+int movimientoX = 0;
+int movimientoY = 0;
+int movimientoZ = 0;
+
 //float t;
 //int[] numF = new int[5];
 //int n;
@@ -118,10 +122,12 @@ void setup() {
   //-------------------------------------------------------------//
   //##GRAFICA##//
   //-------------------------------------------------------------//
+
   tex = new Textura[cuantos];
   for(int i=0; i< tex.length; i++) {
   tex[i] = new Textura();
   }
+  
   /*background(0);
   fill(0,0,0,30);
   for(int i = 0; i < p.length * p.length; i++) {
@@ -163,17 +169,23 @@ void draw() {
   //-------------------------------------------------------------//
   //## GENERACION DE GRAFICOS ##//
   //-------------------------------------------------------------//
+
+  //se convierte a tamaño de pantalla
+  movimientoX = (int)map(float(val3), 0.0, float(MAX_DISTANCE_LEAPX), 0.0, 1920);
+  movimientoY = (int)map(float(val4), 0.0, float(MAX_DISTANCE_LEAPY), 0.0, 530);
+  movimientoZ = (int)map(float(val5), 0.0, float(MAX_DISTANCE_LEAPZ), 0.0, 530);
+
   background(0);
   //control movimiento esfera
-  float rx = (mouseX-(width/2))*0.005;
-  float ry = (mouseY-(height/2))*0.005;
+  float rx = (movimientoX-(width/2))*0.005;
+  float ry = (movimientoY-(height/2))*0.005;
   rx = rx*0.9;
   ry = ry*-0.9;
   //posición esfera
   translate(width/2, height/2);
  
  //descontrol cuando no aparece manos
-  if (mouseY < 1) {
+  if (movimientoY < 1) {
   rotateY(random(-100,100));
   rotateX(random(-100,100));
   }
@@ -182,7 +194,7 @@ void draw() {
   rotateX(ry);
   }
   
-  if (mouseX < 1) {
+  if (movimientoX < 1) {
   rotateY(random(-100, 100));
   rotateX(random(-100, 100));
   }
@@ -201,7 +213,7 @@ void draw() {
   //caracteristicas esfera
   fill(0);
   stroke(255);
-  sphereDetail(mouseY/4);
+  sphereDetail(movimientoZ/4);
   sphere(100);
   
   for (int i = 0; i < tex.length; i++) {
@@ -265,7 +277,6 @@ void draw() {
   }
   
  //La Y de Leap Motion va al reves, por eso hago max distance - val4
- 
   myMessage.setAddrPattern("/layer2/clip1/video/effect2/param1/values");
   myMessage.add(map(float(MAX_DISTANCE_LEAPY - val4Mod), 0.0, float(MAX_DISTANCE_LEAPY), 0.2, 1.0));
   myBundle.add(myMessage);
@@ -402,7 +413,7 @@ class Textura {
     float zb = zo * largo;
 
 //cuando mouse vaya abajo se meten los puntos a cero
-if (mouseY < 1) {
+if (movimientoY < 1) {
     strokeWeight(1);
     beginShape(LINES);
     stroke(1);
