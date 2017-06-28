@@ -252,7 +252,12 @@ void draw() {
   
   //ARDUINO 2
   myMessage.setAddrPattern("/layer4/clip1/video/param8/values");
-  myMessage.add(map(float(val2), 0.0, float(MAX_DISTANCE_ARDUINO), 0.0, 1.0));
+  myMessage.add(map(float(MAX_DISTANCE_ARDUINO - val2), 0.0, float(MAX_DISTANCE_ARDUINO), 0.0, 1.0));
+  myBundle.add(myMessage);
+  myMessage.clear();
+  
+  myMessage.setAddrPattern("/layer4/clip1/video/opacity/values");
+  myMessage.add(map(float(MAX_DISTANCE_ARDUINO - val2), 0.0, float(MAX_DISTANCE_ARDUINO), 0.0, 0.8));
   myBundle.add(myMessage);
   myMessage.clear();
   

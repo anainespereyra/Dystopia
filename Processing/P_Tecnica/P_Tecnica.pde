@@ -180,11 +180,11 @@ void draw() {
   //## DEBUG ##//
   //-------------------------------------------------------------//
   
-  /*println("Arduino1: " + valueArduino1);
+  println("Arduino1: " + valueArduino1);
   println("Arduino2: " + valueArduino2);
   println("POS X = " + posX);
   println("POS Y = " + posY);
-  println("num dedos = " + numF);*/
+  println("num dedos = " + numF);
   
   //-------------------------------------------------------------//
     
