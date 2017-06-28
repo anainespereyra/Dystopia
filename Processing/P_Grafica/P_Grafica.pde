@@ -72,18 +72,27 @@ int MAX_DISTANCE_LEAPY = 90; //TENER EN CUENTA QUE LA Y SE MIDE AL REVES
 int MAX_DISTANCE_LEAPZ = 70;
 
 //Variables para la parte grafica
-float t;
-int[] numF = new int[5];
-int n;
-Vol[][] p = new Vol[70][70];
+
+int cuantos = 30000;
+Textura[] tex ;
+float rx = 0;
+float ry = 0;
+
+//float t;
+//int[] numF = new int[5];
+//int n;
+//Vol[][] p = new Vol[70][70];
 //-------------------------------------------------------------//
 
 
-
-void settings(){
-  size(1920, 1080, P2D);
+void settings() {
+  size(1920, 530, P3D);
   PJOGL.profile=1;
 }
+/*void settings(){
+  size(1920, 1080, P2D);
+  PJOGL.profile=1;
+}*/
 
   
   
@@ -109,11 +118,14 @@ void setup() {
   //-------------------------------------------------------------//
   //##GRAFICA##//
   //-------------------------------------------------------------//
-  background(0);
+  tex = new Textura[cuantos];
+  for(int i=0; i< tex.length; i++) {
+  tex[i] = new Textura();
+  }
+  /*background(0);
   fill(0,0,0,30);
   for(int i = 0; i < p.length * p.length; i++) {
-    p[i/p.length][i%p.length] = new Vol(i/p.length * 4, i%p.length * 4);
-  }
+    p[i/p.length][i%p.length] = new Vol(i/p.length * 4, i%p.length * 4);*/
   //-------------------------------------------------------------//
 }
 
@@ -151,23 +163,50 @@ void draw() {
   //-------------------------------------------------------------//
   //## GENERACION DE GRAFICOS ##//
   //-------------------------------------------------------------//
-  
-  //Funcion generacion particulas con arduino (distancia)
-  float opacidad = map(float(val1), 0, float(MAX_DISTANCE_ARDUINO), 0, 100);
-  opacidad = opacidad - 10;
-  for(n=0; n<530; n+=10) {
-    stroke(150, opacidad);
-    line(0, n, 1920, n);
+  background(0);
+  //control movimiento esfera
+  float rx = (mouseX-(width/2))*0.005;
+  float ry = (mouseY-(height/2))*0.005;
+  rx = rx*0.9;
+  ry = ry*-0.9;
+  //posición esfera
+  translate(width/2, height/2);
+ 
+ //descontrol cuando no aparece manos
+  if (mouseY < 1) {
+  rotateY(random(-100,100));
+  rotateX(random(-100,100));
+  }
+  else {
+  rotateY(rx);
+  rotateX(ry);
   }
   
+  if (mouseX < 1) {
+  rotateY(random(-100, 100));
+  rotateX(random(-100, 100));
+  }
+  else {
+  rotateY(rx);
+  rotateX(ry);
+  }
   
   //Funcion generación de particulas con el movimiento manos
-  rect(0,0,width,height);
+  /*rect(0,0,width,height);
     stroke(255);
     for(Vol[] d:p)for(Vol q:d)
       q.update(val3*10,val4*10);
-      t += 0.01;
-      
+      t += 0.01;*/
+ 
+  //caracteristicas esfera
+  fill(0);
+  stroke(255);
+  sphereDetail(mouseY/4);
+  sphere(100);
+  
+  for (int i = 0; i < tex.length; i++) {
+    tex[i].dibujar();
+  }    
   //-------------------------------------------------------------//
      
   //envio pantalla a Resolume   
@@ -291,8 +330,8 @@ void draw() {
 
 
 
-//Creamos la clase VOl
-class Vol {
+//Creamos la clase
+/*class Vol {
   float x;
   float y;
   float xv;
@@ -324,5 +363,61 @@ class Vol {
     x += xv;
     y += yv;
     line(x,y,x-xv/3,y-yv/3);
+  }
+}*/
+class Textura {
+  float z = random(-100, 100);
+  float phi = random(TWO_PI);
+  float theta = asin(z/100);
+  float largo = random(0.5, 1.2);
+
+  Textura() {
+    //contorno esfera
+    z = random(-100, 100);
+    phi = random (TWO_PI);
+    theta = asin(z/100);
+    //largo textura
+    largo = random (0.5, 1.2);  
+  }
+
+  void dibujar() {
+    //ruido esfera
+    float off = (noise(millis() * 0.0005, sin(phi))-0.5) * 0.3;
+    float offb = (noise(millis() * 0.0007, sin(z) * 0.01)-0.5) * 0.3;
+
+    float thetaff = theta+off;
+    float phff = phi+offb;
+    float x = 100 * cos(theta) * cos(phi);
+    float y = 100 * cos(theta) * sin(phi);
+    float z = 100 * sin(theta);
+
+//inicio de puntos de la esfera
+    float xo = 100 * cos(thetaff) * cos(phff);
+    float yo = 100 * cos(thetaff) * sin(phff);
+    float zo = 100 * sin(thetaff);
+    
+//alcance de puntos de la esfera
+    float xb = xo * largo;
+    float yb = yo * largo;
+    float zb = zo * largo;
+
+//cuando mouse vaya abajo se meten los puntos a cero
+if (mouseY < 1) {
+    strokeWeight(1);
+    beginShape(LINES);
+    stroke(1);
+    vertex(x, y, z);
+    stroke(200);
+    vertex(xb, yb, zb);
+    endShape();
+} else {
+    strokeWeight(1);
+    beginShape(LINES);
+    stroke(1);
+    vertex(x, y, z);
+    stroke(200);
+    vertex(xb, yb, zb);
+    endShape();
+}
   }
 }
