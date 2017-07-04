@@ -12,6 +12,7 @@ import hypermedia.net.*; //UDP
 import oscP5.*; //OSC
 import netP5.*; //OSC
 import codeanticode.syphon.*; //Syphon
+import ddf.minim.*; //audio
 //-------------------------------------------------------------//
 
 //-------------------------------------------------------------//
@@ -78,6 +79,21 @@ Textura[] tex ;
 float rx = 0;
 float ry = 0;
 
+//input audios
+Minim minim;
+AudioPlayer player1;
+AudioPlayer player2;
+AudioPlayer player3;
+AudioPlayer player4;
+AudioPlayer player5;
+AudioPlayer player6;
+AudioPlayer player7;
+AudioPlayer player8;
+AudioPlayer player9;
+AudioPlayer player10;
+AudioInput input;
+
+
 int movimientoX = 0;
 int movimientoY = 0;
 int movimientoZ = 0;
@@ -127,6 +143,22 @@ void setup() {
   for(int i=0; i< tex.length; i++) {
   tex[i] = new Textura();
   }
+  
+  // --------------------------------------------------------------//
+  // SONIDO //
+  //----------------------------------------------------------------//
+  minim = new Minim(this);
+  player1 = minim.loadFile("esfera1.wav");
+  player2 = minim.loadFile("esfera2.wav");
+  player3 = minim.loadFile("esfera3.wav");
+  player4 = minim.loadFile("esfera4.wav");
+  player5 = minim.loadFile("esfera5.wav");
+  player6 = minim.loadFile("esfera6.wav");
+  player7 = minim.loadFile("esfera7.wav");
+  player8 = minim.loadFile("esfera8.wav");
+  player9 = minim.loadFile("esfera9.wav");
+  player10 = minim.loadFile("esfera10.wav");
+  input = minim.getLineIn();
   
   /*background(0);
   fill(0,0,0,30);
@@ -211,9 +243,10 @@ void draw() {
       t += 0.01;*/
  
   //caracteristicas esfera
-  fill(0);
-  stroke(255);
-  sphereDetail(movimientoZ/4);
+  fill(mouseY/3, height);
+  stroke(200);
+  //sphereDetail(movimientoZ/4);
+  sphereDetail(1);
   sphere(100);
   
   for (int i = 0; i < tex.length; i++) {
@@ -221,6 +254,85 @@ void draw() {
   }    
   //-------------------------------------------------------------//
      
+  // NOTAS MUSICALES
+  if (mouseY > 0  || mouseY > 53) {
+  player1.play();
+  //player1 = minim.loadFile("esfera1.wav");
+  } if (mouseY > 106) {
+  player2.play();
+  //player2 = minim.loadFile("esfera2.wav");
+  player1.close();
+} if (mouseY > 159) {
+  player3.play();
+  //player3 = minim.loadFile("esfera3.wav");
+  player1.close();
+  player2.close();
+} if (mouseY > 212) {
+   player4.play();
+   //player4 = minim.loadFile("esfera4.wav");
+   player1.close();
+   player2.close();
+   player3.close();
+} if (mouseY > 265) {
+   player5.play();
+   //player5 = minim.loadFile("esfera5.wav");
+   player1.close();
+   player2.close();
+   player3.close();
+   player4.close();
+} if (mouseY > 318) {
+   player6.play();
+   //player6 = minim.loadFile("esfera6.wav");
+   player1.close();
+   player2.close();
+   player3.close();
+   player4.close();
+   player5.close();
+} if (mouseY > 371) {
+   player7.play();
+   //player7 = minim.loadFile("esfera7.wav");
+   player1.close();
+   player2.close();
+   player3.close();
+   player4.close();
+   player5.close();
+   player6.close();
+} if (mouseY > 371) {
+   player8.play();
+   //player8 = minim.loadFile("esfera8.wav");
+   player1.close();
+   player2.close();
+   player3.close();
+   player4.close();
+   player5.close();
+   player6.close();
+   player7.close();
+} if (mouseY > 477) {
+   player9.play();
+   //player9 = minim.loadFile("esfera9.wav");
+   player1.close();
+   player2.close();
+   player3.close();
+   player4.close();
+   player5.close();
+   player6.close();
+   player7.close();
+   player8.close();
+} if (mouseY > 530) {
+   player10.play();
+   //player10 = minim.loadFile("esfera10.wav");
+   player1.close();
+   player2.close();
+   player3.close();
+   player4.close();
+   player5.close();
+   player6.close();
+   player7.close();
+   player8.close();
+   player9.close();
+}
+  
+  
   //envio pantalla a Resolume   
   server.sendScreen();
   //-------------------------------------------------------------//
@@ -345,7 +457,76 @@ void draw() {
 
 }
 
+//VOLVER A REPRODUCRI AUDIO
 
+void mousePressed() {
+ if (mouseY > 0  || mouseY > 53) {
+    player1 = minim.loadFile("esfera1.wav");
+ } if (mouseY > 106) {
+    player2 = minim.loadFile("esfera2.wav");
+    player1.close();
+ } if (mouseY > 159) {
+    player3 = minim.loadFile("esfera3.wav");
+    player1.close();
+    player2.close();
+ } if (mouseY > 212) {
+    player4 = minim.loadFile("esfera4.wav");
+   player1.close();
+   player2.close();
+   player3.close();
+ } if (mouseY > 265) {
+    player5 = minim.loadFile("esfera5.wav");
+    player1.close();
+   player2.close();
+   player3.close();
+   player4.close();
+ } if (mouseY > 318) {
+    player6 = minim.loadFile("esfera6.wav");
+   player1.close();
+   player2.close();
+   player3.close();
+   player4.close();
+   player5.close();
+ } if (mouseY > 371) {
+    player7 = minim.loadFile("esfera7.wav");
+   player1.close();
+   player2.close();
+   player3.close();
+   player4.close();
+   player5.close();
+   player6.close();
+ } if (mouseY > 424) {
+    player8 = minim.loadFile("esfera8.wav");
+   player1.close();
+   player2.close();
+   player3.close();
+   player4.close();
+   player5.close();
+   player6.close();
+   player7.close();
+ } if (mouseY > 477) {
+    player9 = minim.loadFile("esfera9.wav");
+   player1.close();
+   player2.close();
+   player3.close();
+   player4.close();
+   player5.close();
+   player6.close();
+   player7.close();
+   player8.close();
+ } if (mouseY > 530) {
+    player10 = minim.loadFile("esfera10.wav");
+   player1.close();
+   player2.close();
+   player3.close();
+   player4.close();
+   player5.close();
+   player6.close();
+   player7.close();
+   player8.close();
+   player9.close();
+ }
+}
 
 //Creamos la clase
 /*class Vol {
@@ -422,17 +603,17 @@ class Textura {
 if (movimientoY < 1) {
     strokeWeight(1);
     beginShape(POINTS);
-    stroke(1);
+    stroke(40);
     vertex(x, y, z);
-    stroke(200);
+    stroke(150);
     vertex(xb, yb, zb);
     endShape();
 } else {
     strokeWeight(1);
     beginShape(POINTS);
-    stroke(1);
+    stroke(40);
     vertex(x, y, z);
-    stroke(200);
+    stroke(150);
     vertex(xb, yb, zb);
     endShape();
 }
