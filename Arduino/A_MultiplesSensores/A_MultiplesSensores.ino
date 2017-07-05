@@ -11,7 +11,7 @@
 // ---------------------------------------------------------------------------
 #include <NewPing.h>
 
-#define SONAR_NUM     3 // Number of sensors.
+#define SONAR_NUM     4 // Number of sensors.
 #define MAX_DISTANCE 50 // Maximum distance (in cm) to ping. //CAMBIAR TAMBIEN EN CODIGO PROCESSING
 #define PING_INTERVAL 10 // Milliseconds between sensor pings (29ms is about the min to avoid cross-sensor echo).
 
@@ -20,11 +20,13 @@ unsigned int cm[SONAR_NUM];         // Where the ping distances are stored.
 uint8_t currentSensor = 0;          // Keeps track of which sensor is active.
 
 NewPing sonar[SONAR_NUM] = {
-  NewPing(8, 9, MAX_DISTANCE),
-  NewPing(6, 7, MAX_DISTANCE),
-  NewPing(4, 5, MAX_DISTANCE)
+  NewPing(11, 10, MAX_DISTANCE),
+  NewPing(9, 8, MAX_DISTANCE),
+  NewPing(7, 6, MAX_DISTANCE),
+  NewPing(5, 4, MAX_DISTANCE)
   
 };
+
 
 
 //Array que almacena los valores pasados para hacer un promedio de lo que mide el sensor
