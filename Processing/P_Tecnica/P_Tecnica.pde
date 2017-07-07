@@ -29,7 +29,7 @@ int PuertoLocal5 = 7500; //leapZ
 int puertoRemoto = 6100;
 
 //Direccion ip de la computadora a la que le mandaremos mensajes
-String ipRemota = "192.168.43.92";
+String ipRemota = "172.20.10.2";
 
 //Conexiones UDP
 UDP udp1, udp2, udp3, udp4, udp5;
