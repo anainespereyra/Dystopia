@@ -11,8 +11,8 @@
 import hypermedia.net.*; //UDP
 import oscP5.*; //OSC
 import netP5.*; //OSC
-//import codeanticode.syphon.*; //Syphon
-import spout.*; //Spout (como syphon para windows)
+import codeanticode.syphon.*; //Syphon
+//import spout.*; //Spout (como syphon para windows)
 import ddf.minim.*; //audio
 //-------------------------------------------------------------//
 
@@ -20,8 +20,8 @@ import ddf.minim.*; //audio
 //##CONECTIVIDAD##//
 //-------------------------------------------------------------//
 //Para conexion con Syphon
-//SyphonServer server;
-Spout spout;
+SyphonServer server;
+//Spout spout;
 //Para conexion OSC con Resolume
 //Direccion ip de la computadora a la que le mandaremos mensajes (donde esta el Resolume)
 String ipAddressToSendTo = "localhost";
@@ -108,12 +108,9 @@ int movimientoZ = 0;
 
 void settings() {
   size(1920, 530, P3D);
-  //PJOGL.profile=1;
-}
-/*void settings(){
-  size(1920, 1080, P2D);
   PJOGL.profile=1;
-}*/
+}
+
 
   
   
@@ -133,9 +130,9 @@ void setup() {
   udp.listen( true );
   
   //syphone
-  //server = new SyphonServer(this, "Processing Syphon");
-  spout = new Spout(this);
-  spout.createSender("SpoutProc");
+  server = new SyphonServer(this, "Processing Syphon");
+  //spout = new Spout(this);
+  //spout.createSender("SpoutProc");
   //-------------------------------------------------------------//
   
   //-------------------------------------------------------------//
@@ -337,8 +334,8 @@ void draw() {
   
   
   //envio pantalla a Resolume   
-  //server.sendScreen();
-  spout.sendTexture();
+  server.sendScreen();
+  //spout.sendTexture();
   //-------------------------------------------------------------//
   
   
