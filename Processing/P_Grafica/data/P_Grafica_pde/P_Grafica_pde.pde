@@ -65,6 +65,7 @@ int val3 = 0; //leap (x)
 int val4 = 0; //leap (y)
 int val5 = 0; //leap (z)
 //int val6 = 0; //leap (streched Fingers)
+
 //int val7 = 0; //leap (swipe gesture 0=none;1=right;2=left)
 //int val8 = 0; //leap (circle gesture 0=none;1=right;2=left)
 
@@ -101,6 +102,10 @@ int movimientoX = 0;
 int movimientoY = 0;
 int movimientoZ = 0;
 
+boolean fueraManoX = true;
+boolean fueraManoY = true;
+  
+
 //float t;
 //int[] numF = new int[5];
 //int n;
@@ -136,6 +141,8 @@ void setup() {
   
   //syphone
   server = new SyphonServer(this, "Processing Syphon");
+  
+  
   //-------------------------------------------------------------//
   
   //-------------------------------------------------------------//
@@ -189,7 +196,7 @@ void receive( byte[] data, String ip, int port ) {	// <-- extended handler
      val4 = int(message);
   } else if (port == PuertoRemoto5) {
      val5 = int(message);
-  }/* else if (port == PuertoRemoto6) {
+  } /*else if (port == PuertoRemoto6) {
      val6 = int(message); 
   } else if (port == PuertoRemoto7) {
      val7 = int(message);
@@ -209,6 +216,9 @@ void draw() {
   movimientoX = (int)map(float(val3), 0.0, float(MAX_DISTANCE_LEAPX), 0.0, 1920);
   movimientoY = (int)map(float(val4), 0.0, float(MAX_DISTANCE_LEAPY), 0.0, 530);
   movimientoZ = (int)map(float(val5), 0.0, float(MAX_DISTANCE_LEAPZ), 0.0, 530);
+  println("MOVIMIENTO Y: " + movimientoY);
+  println("MOVIMIENTO X: " + movimientoX);
+  //println("DEDOS: " + val6);
 
   background(0);
   //control movimiento esfera
@@ -220,15 +230,45 @@ void draw() {
   translate(width/2, height/2);
  
  //descontrol cuando no aparece manos
-  if (movimientoY < 1) {
-  rotateY(random(-100,100));
-  rotateX(random(-100,100));
-  }
-  else {
-  rotateY(rx);
-  rotateX(ry);
-  }
+ 
   
+  // boolean true cuando una de las manos está fuera de su rango
+  
+    if (movimientoY > 0 && movimientoY < 600){
+      //LA MANO ESTA DENTRO DEL RANGO DE DETECCION DEL LEAP
+      fueraManoY = false;
+    } else {
+      //LA MANO ESTA FUERA DEL RANGO DE DETECCION DEL LEAP
+      fueraManoY = true;
+    }
+  
+    if (movimientoX > -500 && movimientoX < 2000){
+      //LA MANO ESTA DENTRO DEL RANGO DE DETECCION DEL LEAP
+      fueraManoX = false;
+    } else {
+      //LA MANO ESTA FUERA DEL RANGO DE DETECCION DEL LEAP
+      fueraManoX = true;
+    }
+  
+      println("FUERAMANOXXXXXXXXX " + fueraManoX);
+      println("FUERAMANOY " + fueraManoY);
+      
+      if (fueraManoX == true || fueraManoY == true) {
+      rotateY(random(-100,100));
+      rotateX(random(-100,100));
+      sphereDetail(10);
+      
+      println("MANO FUERAaaaaaaaaAAA");
+      }
+      else {
+      rotateY(rx);
+      rotateX(ry);
+      
+      println("MANO DENTRO");
+      }
+      
+      
+  /*
   if (movimientoX < 1) {
   rotateY(random(-100, 100));
   rotateX(random(-100, 100));
@@ -236,7 +276,7 @@ void draw() {
   else {
   rotateY(rx);
   rotateX(ry);
-  }
+  }*/
   
   //Funcion generación de particulas con el movimiento manos
   /*rect(0,0,width,height);
@@ -246,23 +286,24 @@ void draw() {
       t += 0.01;*/
  
   //caracteristicas esfera
-  fill(movimientoY/3, height);
-  stroke(200);
-  //sphereDetail(movimientoZ/4);
-  sphereDetail(1);
+  fill(0);
+  stroke(255);
+  //sphereDetail(1);
   sphere(100);
-  
+
   for (int i = 0; i < tex.length; i++) {
     tex[i].dibujar();
   }    
   //-------------------------------------------------------------//
      
   // NOTAS MUSICALES
+ 
   if (movimientoY > 0  || movimientoY > 53) {
     if (nota != 1 && movimientoY <= 106){
       nota = 1;
       player1.play();
       player1 = minim.loadFile("esfera1.wav");
+      sphereDetail(1);
       println("1");
      }
   //player1 = minim.loadFile("esfera1.wav");
@@ -271,6 +312,7 @@ void draw() {
       nota = 2;
       player2.play();
       player2 = minim.loadFile("esfera2.wav");
+        sphereDetail(2);
       println("2");
      }
   //player2 = minim.loadFile("esfera2.wav");
@@ -280,6 +322,7 @@ void draw() {
         nota = 3;
         player3.play();
         player3 = minim.loadFile("esfera3.wav");
+          sphereDetail(3);
         println("3");
        }
   
@@ -292,6 +335,7 @@ void draw() {
       nota = 4;
       player4.play();
       player4 = minim.loadFile("esfera4.wav");
+        sphereDetail(4);
       println("4");
      }
    //player4.play();
@@ -304,6 +348,7 @@ void draw() {
       nota = 5;
       player5.play();
       player5 = minim.loadFile("esfera5.wav");
+        sphereDetail(5);
       println("5");
      }
    //player5.play();
@@ -317,6 +362,7 @@ void draw() {
       nota = 6;
       player6.play();
       player6 = minim.loadFile("esfera6.wav");
+        sphereDetail(6);
       println("6");
      }
    //player6 = minim.loadFile("esfera6.wav");
@@ -330,6 +376,7 @@ void draw() {
       nota = 7;
       player7.play();
       player7 = minim.loadFile("esfera7.wav");
+        sphereDetail(7);
       println("7");
      }
    //player7 = minim.loadFile("esfera7.wav");
@@ -344,6 +391,7 @@ void draw() {
       nota = 8;
       player8.play();
       player8 = minim.loadFile("esfera8.wav");
+        sphereDetail(8);
       println("8");
      }
    //player8 = minim.loadFile("esfera8.wav");
@@ -359,6 +407,7 @@ void draw() {
       nota = 9;
       player9.play();
       player9 = minim.loadFile("esfera9.wav");
+        sphereDetail(9);
       println("9");
      }
    //player9 = minim.loadFile("esfera9.wav");
@@ -375,6 +424,7 @@ void draw() {
       nota = 10;
       player10.play();
       player10 = minim.loadFile("esfera10.wav");
+        sphereDetail(10);
       println("10");
      }
     }
@@ -517,7 +567,7 @@ void draw() {
 
 //VOLVER A REPRODUCRI AUDIO
 
-void mousePressed() {
+/*void mousePressed() {
  if (movimientoY > 0  || movimientoY > 53) {
     player1 = minim.loadFile("esfera1.wav");
  } if (movimientoY > 106) {
@@ -584,7 +634,7 @@ void mousePressed() {
    player8.close();
    player9.close();
  }
-}
+}*/
 
 //Creamos la clase
 /*class Vol {
@@ -625,7 +675,7 @@ class Textura {
   float z = random(-100, 100);
   float phi = random(TWO_PI);
   float theta = asin(z/100);
-  float largo = random(0.5, 1.2);
+  float largo = random(0.5, 1.6);
 
   Textura() {
     //contorno esfera
@@ -633,11 +683,41 @@ class Textura {
     phi = random (TWO_PI);
     theta = asin(z/100);
     //largo textura
-    largo = random (0.5, 1.2);  
+    largo = random (0.5, 1.6);  
+    if (nota == 1){
+       largo = random (0.5, 1.6);
+       theta = asin(z/100);
+    }
+    if (nota == 2){
+      largo = random (0.5, 1.4);
+      theta = asin(z/200);
+    }
+    if (nota == 3){
+       largo = random (0.5, 1.2);
+       theta = asin(z/300);
+    }
+    if (nota == 4){
+      largo = random (0.5, 1); 
+      theta = asin(z/400);
+    }
+    if (nota == 5){
+       largo = random (0.5, 0.8);
+       theta = asin(z/500);
+    }
+    if (nota == 6){
+      largo = random (0.5, 0.6);
+      theta = asin(z/700);
+    }
+    if (nota == 7 || nota == 8 || nota == 9 || nota == 10){
+       largo = 0;
+       theta = asin(z/1000);
+    }
+    
   }
 
   void dibujar() {
     //ruido esfera
+    
     float off = (noise(millis() * 0.0005, sin(phi))-0.5) * 0.3;
     float offb = (noise(millis() * 0.0007, sin(z) * 0.01)-0.5) * 0.3;
 
@@ -658,22 +738,29 @@ class Textura {
     float zb = zo * largo;
 
 //cuando mouse vaya abajo se meten los puntos a cero
-if (movimientoY < 1) {
+
+if (fueraManoY) {
     strokeWeight(1);
     beginShape(POINTS);
     stroke(40);
     vertex(x, y, z);
-    stroke(150);
+    stroke(200);
     vertex(xb, yb, zb);
     endShape();
 } else {
-    strokeWeight(1);
-    beginShape(POINTS);
-    stroke(40);
-    vertex(x, y, z);
-    stroke(150);
-    vertex(xb, yb, zb);
-    endShape();
+      /*int strokeP = nota * 10;
+      float strokePm = map(strokeP, 0, 1000, 0, 255);
+      int strokeE = -nota * 10;
+      float strokeEm = map(strokeE, 0, 1000, 0, 255);*/
+      
+      strokeWeight(1);
+      beginShape(POINTS);
+      stroke(30);
+      vertex(x, y, z);
+      stroke(200);
+      vertex(xb, yb, zb);
+      endShape();
+    
 }
   }
 }
