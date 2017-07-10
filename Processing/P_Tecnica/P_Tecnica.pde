@@ -58,8 +58,8 @@ LeapMotion leap;
 float posX;
 float posY;
 float posZ;
-int swipe = 0;
-int numF;
+//int swipe = 0;
+//int numF;
 //-------------------------------------------------------------//
 
 void setup() {
@@ -91,7 +91,7 @@ void setup() {
   posX = 0;
   posY = 0;
   posZ = 0;
-  numF = 0;
+  //numF = 0;
   //-------------------------------------------------------------//
   
   
@@ -156,7 +156,7 @@ void draw() {
      posX = handPosition.x;
      posY = handPosition.y;  
      posZ = handPosition.z;
-     numF = hand.getOutstretchedFingers().size();
+     //numF = hand.getOutstretchedFingers().size();
 
     
   }
@@ -199,6 +199,7 @@ void draw() {
   println("num dedos = " + numF);*/
   
   //-------------------------------------------------------------//
+  println("HAS HAND = " + m6);
     
 }
 
