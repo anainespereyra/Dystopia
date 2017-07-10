@@ -24,6 +24,7 @@ int PuertoLocal2 = 7200; //arduino2
 int PuertoLocal3 = 7300; //leapX
 int PuertoLocal4 = 7400; //leapY
 int PuertoLocal5 = 7500; //leapZ
+int PuertoLocal6 = 7600; //HAND-DETECTED
 
 //Puerto que recibe datos en PC de graficos
 int puertoRemoto = 6100;
@@ -32,7 +33,7 @@ int puertoRemoto = 6100;
 String ipRemota = "172.20.10.2";
 
 //Conexiones UDP
-UDP udp1, udp2, udp3, udp4, udp5;
+UDP udp1, udp2, udp3, udp4, udp5, udp6;
 
 //-------------------------------------------------------------//
 
@@ -104,6 +105,7 @@ void setup() {
   udp3 = new UDP( this, PuertoLocal3 );
   udp4 = new UDP( this, PuertoLocal4 );
   udp5 = new UDP( this, PuertoLocal5 );
+  udp6 = new UDP( this, PuertoLocal6 );
 
   //-------------------------------------------------------------//
 
@@ -138,6 +140,14 @@ void draw() {
   //## PROCESAMIENTO DATOS LEAP MOTION ##//
   //-------------------------------------------------------------//
   
+  //pasamos una variable a grafica para indicarle si hay alguna mano detectada o no
+  int m6 = 0;
+  
+  if (leap.hasHands()) {
+    m6 = 1;
+  }else{
+    m6 = 0;
+  }
   
   for (Hand hand : leap.getHands ()) {
 
@@ -160,6 +170,7 @@ void draw() {
   String message3  = str(m3);
   String message4  = str(m4);
   String message5  = str(m5);
+  String message6  = str(m6);
   //-------------------------------------------------------------//
   
   
@@ -172,6 +183,7 @@ void draw() {
   udp3.send( message3, ipRemota, puertoRemoto ); //leapX
   udp4.send( message4, ipRemota, puertoRemoto ); //leapY
   udp5.send( message5, ipRemota, puertoRemoto ); //leapZ
+  udp6.send( message6, ipRemota, puertoRemoto ); //hasHands
   
   //-------------------------------------------------------------//
   
@@ -194,7 +206,7 @@ void draw() {
 
 
 
-void leapOnSwipeGesture(SwipeGesture g, int state){
+/*void leapOnSwipeGesture(SwipeGesture g, int state){
   
   String message6;
   PVector direction        = g.getDirection();
@@ -237,7 +249,7 @@ void leapOnCircleGesture(CircleGesture g, int state){
   int m7 = 0;
   message7 = str(m7);
 
-  /*switch(state){
+  switch(state){
     case 1: // Start
       break;
     case 2: // Update
@@ -245,7 +257,7 @@ void leapOnCircleGesture(CircleGesture g, int state){
     case 3: // Stop
       //println("CircleGesture: " + id);
       break;
-  }*/
+  }
 
   switch(direction){
     case 0: // Anticlockwise/Left gesture
@@ -267,4 +279,4 @@ void leapOnCircleGesture(CircleGesture g, int state){
   }
   //udp7.send( message7, ipRemota, puertoRemoto ); //leap-swipe
   m7 = 0;
-}
+}*/

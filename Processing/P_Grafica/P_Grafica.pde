@@ -11,8 +11,8 @@
 import hypermedia.net.*; //UDP
 import oscP5.*; //OSC
 import netP5.*; //OSC
-import codeanticode.syphon.*; //Syphon
-//import spout.*; //Spout (como syphon para windows)
+//import codeanticode.syphon.*; //Syphon
+import spout.*; //Spout (como syphon para windows)
 import ddf.minim.*; //audio
 //-------------------------------------------------------------//
 
@@ -20,8 +20,8 @@ import ddf.minim.*; //audio
 //##CONECTIVIDAD##//
 //-------------------------------------------------------------//
 //Para conexion con Syphon
-SyphonServer server;
-//Spout spout;
+//SyphonServer server;
+Spout spout;
 //Para conexion OSC con Resolume
 //Direccion ip de la computadora a la que le mandaremos mensajes (donde esta el Resolume)
 String ipAddressToSendTo = "localhost";
@@ -130,9 +130,9 @@ void setup() {
   udp.listen( true );
   
   //syphone
-  server = new SyphonServer(this, "Processing Syphon");
-  //spout = new Spout(this);
-  //spout.createSender("SpoutProc");
+  //server = new SyphonServer(this, "Processing Syphon");
+  spout = new Spout(this);
+  spout.createSender("SpoutProc");
   //-------------------------------------------------------------//
   
   //-------------------------------------------------------------//
@@ -243,7 +243,7 @@ void draw() {
       t += 0.01;*/
  
   //caracteristicas esfera
-  fill(mouseY/3, height);
+  fill(movimientoY/3, height);
   stroke(200);
   //sphereDetail(movimientoZ/4);
   sphereDetail(1);
@@ -255,32 +255,32 @@ void draw() {
   //-------------------------------------------------------------//
      
   // NOTAS MUSICALES
-  if (mouseY > 0  || mouseY > 53) {
+  if (movimientoY > 0  || movimientoY > 53) {
   player1.play();
   //player1 = minim.loadFile("esfera1.wav");
-  } if (mouseY > 106) {
+  } if (movimientoY > 106) {
   player2.play();
   //player2 = minim.loadFile("esfera2.wav");
   player1.close();
-} if (mouseY > 159) {
+} if (movimientoY > 159) {
   player3.play();
   //player3 = minim.loadFile("esfera3.wav");
   player1.close();
   player2.close();
-} if (mouseY > 212) {
+} if (movimientoY > 212) {
    player4.play();
    //player4 = minim.loadFile("esfera4.wav");
    player1.close();
    player2.close();
    player3.close();
-} if (mouseY > 265) {
+} if (movimientoY > 265) {
    player5.play();
    //player5 = minim.loadFile("esfera5.wav");
    player1.close();
    player2.close();
    player3.close();
    player4.close();
-} if (mouseY > 318) {
+} if (movimientoY > 318) {
    player6.play();
    //player6 = minim.loadFile("esfera6.wav");
    player1.close();
@@ -288,7 +288,7 @@ void draw() {
    player3.close();
    player4.close();
    player5.close();
-} if (mouseY > 371) {
+} if (movimientoY > 371) {
    player7.play();
    //player7 = minim.loadFile("esfera7.wav");
    player1.close();
@@ -297,7 +297,7 @@ void draw() {
    player4.close();
    player5.close();
    player6.close();
-} if (mouseY > 371) {
+} if (movimientoY > 371) {
    player8.play();
    //player8 = minim.loadFile("esfera8.wav");
    player1.close();
@@ -307,7 +307,7 @@ void draw() {
    player5.close();
    player6.close();
    player7.close();
-} if (mouseY > 477) {
+} if (movimientoY > 477) {
    player9.play();
    //player9 = minim.loadFile("esfera9.wav");
    player1.close();
@@ -318,7 +318,7 @@ void draw() {
    player6.close();
    player7.close();
    player8.close();
-} if (mouseY > 530) {
+} if (movimientoY > 530) {
    player10.play();
    //player10 = minim.loadFile("esfera10.wav");
    player1.close();
@@ -334,8 +334,8 @@ void draw() {
   
   
   //envio pantalla a Resolume   
-  server.sendScreen();
-  //spout.sendTexture();
+  //server.sendScreen();
+  spout.sendTexture();
   //-------------------------------------------------------------//
   
   
@@ -353,34 +353,54 @@ void draw() {
   //Se escriben mensajes para Resolume
   
   //ARDUINO 1
-  myMessage.setAddrPattern("/layer2/clip1/video/effect1/opacity/values");
+  myMessage.setAddrPattern("/layer3/clip1/video/effect1/opacity/values");
   myMessage.add(map(float(MAX_DISTANCE_ARDUINO - val1 + 10), 0.0, float(MAX_DISTANCE_ARDUINO), 0.0, 1.0)); // el +10 es porque no llegaba a tope
   myBundle.add(myMessage);
   myMessage.clear();
   
-  myMessage.setAddrPattern("/layer5/clip1/video/opacity/values");
-  myMessage.add(map(float(MAX_DISTANCE_ARDUINO - val1), 0.0, float(MAX_DISTANCE_ARDUINO), 0.0, 1.0));
+  myMessage.setAddrPattern("/layer4/clip1/audio/effect1/param1/values");
+  myMessage.add(map(float(MAX_DISTANCE_ARDUINO - val1 + 10), 0.0, float(MAX_DISTANCE_ARDUINO), 0.0, 0.2)); // el +10 es porque no llegaba a tope
   myBundle.add(myMessage);
   myMessage.clear();
+  
+  myMessage.setAddrPattern("/layer9/clip1/video/opacity/values");
+  myMessage.add(map(float(MAX_DISTANCE_ARDUINO - val1 + 10), 0.0, float(MAX_DISTANCE_ARDUINO), 0.0, 1.0)); // el +10 es porque no llegaba a tope
+  myBundle.add(myMessage);
+  myMessage.clear();
+
   
   //ARDUINO 2
-  myMessage.setAddrPattern("/layer4/clip1/video/param5/values");
-  myMessage.add(map(float(val2), 0.0, float(MAX_DISTANCE_ARDUINO), 0.0, 1.0));
+  myMessage.setAddrPattern("/layer6/clip1/audio/pitch/values");
+  myMessage.add(map(float(val2-10), 0.0, float(MAX_DISTANCE_ARDUINO), 0.1, 1.0));
+  myBundle.add(myMessage);
+  myMessage.clear();
+
+  myMessage.setAddrPattern("/layer5/clip1/video/effect1/param1/values");
+  myMessage.add(map(float(val2-10), 0.0, float(MAX_DISTANCE_ARDUINO), 0.2, 1.0));
   myBundle.add(myMessage);
   myMessage.clear();
   
-  /*
-  myMessage.setAddrPattern("/layer4/clip1/video/opacity/values");
-  myMessage.add(map(float(MAX_DISTANCE_ARDUINO - val2), 0.0, float(MAX_DISTANCE_ARDUINO), 0.0, 0.8));
+  myMessage.setAddrPattern("/layer3/clip1/video/effect2/param1/values");
+  myMessage.add(map(float(val2 -10), 0.0, float(MAX_DISTANCE_ARDUINO), 0.2, 0.5));
   myBundle.add(myMessage);
-  myMessage.clear();*/
+  myMessage.clear();
   
-  
+  myMessage.setAddrPattern("/layer8/clip1/audio/effect1/param1/values");
+  myMessage.add(map(float(val2 -10), 0.0, float(MAX_DISTANCE_ARDUINO), 0.0, 0.15));
+  myBundle.add(myMessage);
+  myMessage.clear();
   
   //LEAP MOTION
-  
+  int val3Mod = val3;
   int val4Mod = val4;
   int val5Mod = val5;
+  
+   if (val3Mod < 0){
+    val3Mod = 0;
+  }
+  if (val3Mod > MAX_DISTANCE_LEAPX){
+    val3Mod = MAX_DISTANCE_LEAPX;
+  }
   
   if (val4Mod < 0){
     val4Mod = 0;
@@ -395,11 +415,19 @@ void draw() {
     val5Mod = MAX_DISTANCE_LEAPZ;
   }
   
+  /*
  //La Y de Leap Motion va al reves, por eso hago max distance - val4
   myMessage.setAddrPattern("/layer2/clip1/video/effect2/param1/values");
   myMessage.add(map(float(MAX_DISTANCE_LEAPY - val4Mod), 0.0, float(MAX_DISTANCE_LEAPY), 0.2, 0.8));
   myBundle.add(myMessage);
+  myMessage.clear();*/
+  
+  myMessage.setAddrPattern("/layer8/clip1/audio/effect1/param1/values");
+  myMessage.add(map(float(val3Mod), 0.0, float(MAX_DISTANCE_LEAPX), 0.0, 0.7));
+  myBundle.add(myMessage);
   myMessage.clear();
+  
+
   
   
   /*if (val8 == 1){
@@ -461,34 +489,34 @@ void draw() {
 //VOLVER A REPRODUCRI AUDIO
 
 void mousePressed() {
- if (mouseY > 0  || mouseY > 53) {
+ if (movimientoY > 0  || movimientoY > 53) {
     player1 = minim.loadFile("esfera1.wav");
- } if (mouseY > 106) {
+ } if (movimientoY > 106) {
     player2 = minim.loadFile("esfera2.wav");
     player1.close();
- } if (mouseY > 159) {
+ } if (movimientoY > 159) {
     player3 = minim.loadFile("esfera3.wav");
     player1.close();
     player2.close();
- } if (mouseY > 212) {
+ } if (movimientoY > 212) {
     player4 = minim.loadFile("esfera4.wav");
    player1.close();
    player2.close();
    player3.close();
- } if (mouseY > 265) {
+ } if (movimientoY > 265) {
     player5 = minim.loadFile("esfera5.wav");
     player1.close();
    player2.close();
    player3.close();
    player4.close();
- } if (mouseY > 318) {
+ } if (movimientoY > 318) {
     player6 = minim.loadFile("esfera6.wav");
    player1.close();
    player2.close();
    player3.close();
    player4.close();
    player5.close();
- } if (mouseY > 371) {
+ } if (movimientoY > 371) {
     player7 = minim.loadFile("esfera7.wav");
    player1.close();
    player2.close();
@@ -496,7 +524,7 @@ void mousePressed() {
    player4.close();
    player5.close();
    player6.close();
- } if (mouseY > 424) {
+ } if (movimientoY > 424) {
     player8 = minim.loadFile("esfera8.wav");
    player1.close();
    player2.close();
@@ -505,7 +533,7 @@ void mousePressed() {
    player5.close();
    player6.close();
    player7.close();
- } if (mouseY > 477) {
+ } if (movimientoY > 477) {
     player9 = minim.loadFile("esfera9.wav");
    player1.close();
    player2.close();
@@ -515,7 +543,7 @@ void mousePressed() {
    player6.close();
    player7.close();
    player8.close();
- } if (mouseY > 530) {
+ } if (movimientoY > 530) {
     player10 = minim.loadFile("esfera10.wav");
    player1.close();
    player2.close();
@@ -551,7 +579,7 @@ void mousePressed() {
   void update(float fingerX, float fingerY) {
     stroke(255, 255, 255, 30);
     float m = 100;
-    float d = dist(width/m,height/m,mouseX/m,mouseY/m);
+    float d = dist(width/m,height/m,mouseX/m,movimientoY/m);
     xv += 0.001*(fingerX-x)*pow(d, ww)*w;
     yv += 0.001*(fingerY-y)*pow(d, ww)*w;
     float drg = (noise(x/20+492,y/20+490,t*5.2)-0.5)/300 + 1.05;
