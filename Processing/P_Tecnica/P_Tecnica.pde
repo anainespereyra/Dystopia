@@ -30,7 +30,7 @@ int PuertoLocal6 = 7600; //HAND-DETECTED
 int puertoRemoto = 6100;
 
 //Direccion ip de la computadora a la que le mandaremos mensajes
-String ipRemota = "172.20.10.2";
+String ipRemota = "192.168.0.101";
 
 //Conexiones UDP
 UDP udp1, udp2, udp3, udp4, udp5, udp6;
@@ -199,7 +199,7 @@ void draw() {
   println("num dedos = " + numF);*/
   
   //-------------------------------------------------------------//
-  println("HAS HAND = " + m6);
+  //println("HAS HAND = " + m6);
     
 }
 

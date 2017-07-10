@@ -250,14 +250,14 @@ void draw() {
       
       // LEAP NO DETECTA NINGUNA MANO
       if (val6 == 0){
-        println("NO hay MANO " + val6);
+        //println("NO hay MANO " + val6);
         rotateY(random(-100,100));
         rotateX(random(-100,100));
         sphereDetail(10);
         nota = 0;
         // LEAP DETECTA ALGUNA MANO
       }else {
-        println("SI hay MANO " + val6);
+        //println("SI hay MANO " + val6);
         rotateY(rx);
         rotateX(ry);
       }
@@ -299,7 +299,7 @@ void draw() {
       player1.play();
       player1 = minim.loadFile("esfera1.wav");
       sphereDetail(10);
-      println("1");
+      //println("1");
      }
   } if (movimientoY > 106 && movimientoY <= 159) {
       if (nota != 2){
@@ -307,7 +307,7 @@ void draw() {
       player2.play();
       player2 = minim.loadFile("esfera2.wav");
       sphereDetail(9);
-      println("2");
+      //println("2");
      }
 
 } if (movimientoY > 159 && movimientoY <= 212) {
@@ -316,7 +316,7 @@ void draw() {
         player3.play();
         player3 = minim.loadFile("esfera3.wav");
         sphereDetail(8);
-        println("3");
+        //println("3");
        }
 
 } if (movimientoY > 212 && movimientoY <= 265) {
@@ -326,7 +326,7 @@ void draw() {
       player4.play();
       player4 = minim.loadFile("esfera4.wav");
       sphereDetail(7);
-      println("4");
+      //println("4");
      }
 
 } if (movimientoY > 265 && movimientoY <= 318) {
@@ -335,7 +335,7 @@ void draw() {
       player5.play();
       player5 = minim.loadFile("esfera5.wav");
       sphereDetail(6);
-      println("5");
+      //println("5");
      }
 
 } if (movimientoY > 318 && movimientoY <= 371) {
@@ -344,7 +344,7 @@ void draw() {
       player6.play();
       player6 = minim.loadFile("esfera6.wav");
       sphereDetail(5);
-      println("6");
+      //println("6");
      }
 
 } if (movimientoY > 371 && movimientoY <= 424) {
@@ -353,7 +353,7 @@ void draw() {
       player7.play();
       player7 = minim.loadFile("esfera7.wav");
       sphereDetail(4);
-      println("7");
+      //println("7");
      }
 
 } if (movimientoY > 424 && movimientoY <= 477) {
@@ -362,7 +362,7 @@ void draw() {
       player8.play();
       player8 = minim.loadFile("esfera8.wav");
       sphereDetail(3);
-      println("8");
+      //println("8");
      }
 
 } if (movimientoY > 477 && movimientoY <= 510) {
@@ -371,7 +371,7 @@ void draw() {
       player9.play();
       player9 = minim.loadFile("esfera9.wav");
       sphereDetail(2);
-      println("9");
+      //println("9");
      }
 
 } if (movimientoY > 510) {
@@ -380,9 +380,8 @@ void draw() {
       player10.play();
       player10 = minim.loadFile("esfera10.wav");
       sphereDetail(1);
-      println("10");
+      //println("10");
      }
-    }
 }
   
   
