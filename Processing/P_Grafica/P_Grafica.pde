@@ -22,6 +22,10 @@ import ddf.minim.*; //audio
 //Para conexion con Syphon
 //SyphonServer server;
 Spout spout;
+
+//para controlar las notas del audio
+int nota = 0;
+
 //Para conexion OSC con Resolume
 //Direccion ip de la computadora a la que le mandaremos mensajes (donde esta el Resolume)
 String ipAddressToSendTo = "localhost";
@@ -49,7 +53,7 @@ int PuertoRemoto2 = 7200; //arduino
 int PuertoRemoto3 = 7300; //leap 
 int PuertoRemoto4 = 7400; //leap 
 int PuertoRemoto5 = 7500; //leap 
-//int PuertoRemoto6 = 7600; //leap swipe
+int PuertoRemoto6 = 7600; //leap hand detected y/n -> 0/1
 //int PuertoRemoto7 = 7700; //leap circle
 
 //-------------------------------------------------------------//
@@ -62,7 +66,8 @@ int val2 = 0; //arduino2
 int val3 = 0; //leap (x)
 int val4 = 0; //leap (y)
 int val5 = 0; //leap (z)
-//int val6 = 0; //leap (streched Fingers)
+int val6 = 0; //leap hand detected
+
 //int val7 = 0; //leap (swipe gesture 0=none;1=right;2=left)
 //int val8 = 0; //leap (circle gesture 0=none;1=right;2=left)
 
@@ -99,6 +104,7 @@ int movimientoX = 0;
 int movimientoY = 0;
 int movimientoZ = 0;
 
+
 //float t;
 //int[] numF = new int[5];
 //int n;
@@ -110,7 +116,10 @@ void settings() {
   size(1920, 530, P3D);
   PJOGL.profile=1;
 }
-
+/*void settings(){
+  size(1920, 1080, P2D);
+  PJOGL.profile=1;
+}*/
 
   
   
@@ -133,6 +142,7 @@ void setup() {
   //server = new SyphonServer(this, "Processing Syphon");
   spout = new Spout(this);
   spout.createSender("SpoutProc");
+  
   //-------------------------------------------------------------//
   
   //-------------------------------------------------------------//
@@ -186,9 +196,9 @@ void receive( byte[] data, String ip, int port ) {	// <-- extended handler
      val4 = int(message);
   } else if (port == PuertoRemoto5) {
      val5 = int(message);
-  }/* else if (port == PuertoRemoto6) {
+  } else if (port == PuertoRemoto6) {
      val6 = int(message); 
-  } else if (port == PuertoRemoto7) {
+  } /*else if (port == PuertoRemoto7) {
      val7 = int(message);
   }*/
 
@@ -207,6 +217,7 @@ void draw() {
   movimientoY = (int)map(float(val4), 0.0, float(MAX_DISTANCE_LEAPY), 0.0, 530);
   movimientoZ = (int)map(float(val5), 0.0, float(MAX_DISTANCE_LEAPZ), 0.0, 530);
 
+
   background(0);
   //control movimiento esfera
   float rx = (movimientoX-(width/2))*0.005;
@@ -217,15 +228,42 @@ void draw() {
   translate(width/2, height/2);
  
  //descontrol cuando no aparece manos
-  if (movimientoY < 1) {
-  rotateY(random(-100,100));
-  rotateX(random(-100,100));
-  }
-  else {
-  rotateY(rx);
-  rotateX(ry);
-  }
+ 
   
+  // boolean true cuando una de las manos está fuera de su rango
+  
+    /*if (movimientoY > 0 && movimientoY < 600){
+      //LA MANO ESTA DENTRO DEL RANGO DE DETECCION DEL LEAP
+      fueraManoY = false;
+    } else {
+      //LA MANO ESTA FUERA DEL RANGO DE DETECCION DEL LEAP
+      fueraManoY = true;
+    }
+  
+    if (movimientoX > -500 && movimientoX < 2000){
+      //LA MANO ESTA DENTRO DEL RANGO DE DETECCION DEL LEAP
+      fueraManoX = false;
+    } else {
+      //LA MANO ESTA FUERA DEL RANGO DE DETECCION DEL LEAP
+      fueraManoX = true;
+    }*/
+      
+      // LEAP NO DETECTA NINGUNA MANO
+      if (val6 == 0){
+        println("NO hay MANO " + val6);
+        rotateY(random(-100,100));
+        rotateX(random(-100,100));
+        sphereDetail(10);
+        nota = 0;
+        // LEAP DETECTA ALGUNA MANO
+      }else {
+        println("SI hay MANO " + val6);
+        rotateY(rx);
+        rotateX(ry);
+      }
+
+      
+  /*
   if (movimientoX < 1) {
   rotateY(random(-100, 100));
   rotateX(random(-100, 100));
@@ -233,7 +271,7 @@ void draw() {
   else {
   rotateY(rx);
   rotateX(ry);
-  }
+  }*/
   
   //Funcion generación de particulas con el movimiento manos
   /*rect(0,0,width,height);
@@ -243,93 +281,108 @@ void draw() {
       t += 0.01;*/
  
   //caracteristicas esfera
-  fill(movimientoY/3, height);
-  stroke(200);
-  //sphereDetail(movimientoZ/4);
-  sphereDetail(1);
+  fill(movimientoY/2);
+  stroke(255);
+  //sphereDetail(1);
   sphere(100);
-  
+
   for (int i = 0; i < tex.length; i++) {
     tex[i].dibujar();
   }    
   //-------------------------------------------------------------//
      
   // NOTAS MUSICALES
+ 
   if (movimientoY > 0  || movimientoY > 53) {
-  player1.play();
-  //player1 = minim.loadFile("esfera1.wav");
-  } if (movimientoY > 106) {
-  player2.play();
-  //player2 = minim.loadFile("esfera2.wav");
-  player1.close();
-} if (movimientoY > 159) {
-  player3.play();
-  //player3 = minim.loadFile("esfera3.wav");
-  player1.close();
-  player2.close();
-} if (movimientoY > 212) {
-   player4.play();
-   //player4 = minim.loadFile("esfera4.wav");
-   player1.close();
-   player2.close();
-   player3.close();
-} if (movimientoY > 265) {
-   player5.play();
-   //player5 = minim.loadFile("esfera5.wav");
-   player1.close();
-   player2.close();
-   player3.close();
-   player4.close();
-} if (movimientoY > 318) {
-   player6.play();
-   //player6 = minim.loadFile("esfera6.wav");
-   player1.close();
-   player2.close();
-   player3.close();
-   player4.close();
-   player5.close();
-} if (movimientoY > 371) {
-   player7.play();
-   //player7 = minim.loadFile("esfera7.wav");
-   player1.close();
-   player2.close();
-   player3.close();
-   player4.close();
-   player5.close();
-   player6.close();
-} if (movimientoY > 371) {
-   player8.play();
-   //player8 = minim.loadFile("esfera8.wav");
-   player1.close();
-   player2.close();
-   player3.close();
-   player4.close();
-   player5.close();
-   player6.close();
-   player7.close();
-} if (movimientoY > 477) {
-   player9.play();
-   //player9 = minim.loadFile("esfera9.wav");
-   player1.close();
-   player2.close();
-   player3.close();
-   player4.close();
-   player5.close();
-   player6.close();
-   player7.close();
-   player8.close();
-} if (movimientoY > 530) {
-   player10.play();
-   //player10 = minim.loadFile("esfera10.wav");
-   player1.close();
-   player2.close();
-   player3.close();
-   player4.close();
-   player5.close();
-   player6.close();
-   player7.close();
-   player8.close();
-   player9.close();
+    if (nota != 1 && movimientoY <= 106){
+      nota = 1;
+      player1.play();
+      player1 = minim.loadFile("esfera1.wav");
+      sphereDetail(10);
+      println("1");
+     }
+  } if (movimientoY > 106 && movimientoY <= 159) {
+      if (nota != 2){
+      nota = 2;
+      player2.play();
+      player2 = minim.loadFile("esfera2.wav");
+      sphereDetail(9);
+      println("2");
+     }
+
+} if (movimientoY > 159 && movimientoY <= 212) {
+    if (nota != 3){
+        nota = 3;
+        player3.play();
+        player3 = minim.loadFile("esfera3.wav");
+        sphereDetail(8);
+        println("3");
+       }
+
+} if (movimientoY > 212 && movimientoY <= 265) {
+  
+      if (nota != 4){
+      nota = 4;
+      player4.play();
+      player4 = minim.loadFile("esfera4.wav");
+      sphereDetail(7);
+      println("4");
+     }
+
+} if (movimientoY > 265 && movimientoY <= 318) {
+    if (nota != 5){
+      nota = 5;
+      player5.play();
+      player5 = minim.loadFile("esfera5.wav");
+      sphereDetail(6);
+      println("5");
+     }
+
+} if (movimientoY > 318 && movimientoY <= 371) {
+   if (nota != 6){
+      nota = 6;
+      player6.play();
+      player6 = minim.loadFile("esfera6.wav");
+      sphereDetail(5);
+      println("6");
+     }
+
+} if (movimientoY > 371 && movimientoY <= 424) {
+   if (nota != 7){
+      nota = 7;
+      player7.play();
+      player7 = minim.loadFile("esfera7.wav");
+      sphereDetail(4);
+      println("7");
+     }
+
+} if (movimientoY > 424 && movimientoY <= 477) {
+   if (nota != 8){
+      nota = 8;
+      player8.play();
+      player8 = minim.loadFile("esfera8.wav");
+      sphereDetail(3);
+      println("8");
+     }
+
+} if (movimientoY > 477 && movimientoY <= 510) {
+   if (nota != 9){
+      nota = 9;
+      player9.play();
+      player9 = minim.loadFile("esfera9.wav");
+      sphereDetail(2);
+      println("9");
+     }
+
+} if (movimientoY > 510) {
+   if (nota != 10){
+      nota = 10;
+      player10.play();
+      player10 = minim.loadFile("esfera10.wav");
+      sphereDetail(1);
+      println("10");
+     }
+    }
 }
   
   
@@ -352,7 +405,7 @@ void draw() {
 
   //Se escriben mensajes para Resolume
   
-  //ARDUINO 1
+   //ARDUINO 1
   myMessage.setAddrPattern("/layer3/clip1/video/effect1/opacity/values");
   myMessage.add(map(float(MAX_DISTANCE_ARDUINO - val1 + 10), 0.0, float(MAX_DISTANCE_ARDUINO), 0.0, 1.0)); // el +10 es porque no llegaba a tope
   myBundle.add(myMessage);
@@ -390,7 +443,9 @@ void draw() {
   myBundle.add(myMessage);
   myMessage.clear();
   
-  //LEAP MOTION
+  
+  
+ //LEAP MOTION
   int val3Mod = val3;
   int val4Mod = val4;
   int val5Mod = val5;
@@ -426,8 +481,6 @@ void draw() {
   myMessage.add(map(float(val3Mod), 0.0, float(MAX_DISTANCE_LEAPX), 0.0, 0.7));
   myBundle.add(myMessage);
   myMessage.clear();
-  
-
   
   
   /*if (val8 == 1){
@@ -486,117 +539,11 @@ void draw() {
 
 }
 
-//VOLVER A REPRODUCRI AUDIO
-
-void mousePressed() {
- if (movimientoY > 0  || movimientoY > 53) {
-    player1 = minim.loadFile("esfera1.wav");
- } if (movimientoY > 106) {
-    player2 = minim.loadFile("esfera2.wav");
-    player1.close();
- } if (movimientoY > 159) {
-    player3 = minim.loadFile("esfera3.wav");
-    player1.close();
-    player2.close();
- } if (movimientoY > 212) {
-    player4 = minim.loadFile("esfera4.wav");
-   player1.close();
-   player2.close();
-   player3.close();
- } if (movimientoY > 265) {
-    player5 = minim.loadFile("esfera5.wav");
-    player1.close();
-   player2.close();
-   player3.close();
-   player4.close();
- } if (movimientoY > 318) {
-    player6 = minim.loadFile("esfera6.wav");
-   player1.close();
-   player2.close();
-   player3.close();
-   player4.close();
-   player5.close();
- } if (movimientoY > 371) {
-    player7 = minim.loadFile("esfera7.wav");
-   player1.close();
-   player2.close();
-   player3.close();
-   player4.close();
-   player5.close();
-   player6.close();
- } if (movimientoY > 424) {
-    player8 = minim.loadFile("esfera8.wav");
-   player1.close();
-   player2.close();
-   player3.close();
-   player4.close();
-   player5.close();
-   player6.close();
-   player7.close();
- } if (movimientoY > 477) {
-    player9 = minim.loadFile("esfera9.wav");
-   player1.close();
-   player2.close();
-   player3.close();
-   player4.close();
-   player5.close();
-   player6.close();
-   player7.close();
-   player8.close();
- } if (movimientoY > 530) {
-    player10 = minim.loadFile("esfera10.wav");
-   player1.close();
-   player2.close();
-   player3.close();
-   player4.close();
-   player5.close();
-   player6.close();
-   player7.close();
-   player8.close();
-   player9.close();
- }
-}
-
-//Creamos la clase
-/*class Vol {
-  float x;
-  float y;
-  float xv;
-  float yv;
-  float w;
-  float ww;
-  float gu;
-  float hu;
-  Vol(int x2, int y2) {
-    x = random(width);
-    y = random(height);
-    w = random(1,1);
-    ww = random(-1,1);
-    gu = x2;
-    hu = y2;
-  }
-  
-  void update(float fingerX, float fingerY) {
-    stroke(255, 255, 255, 30);
-    float m = 100;
-    float d = dist(width/m,height/m,mouseX/m,movimientoY/m);
-    xv += 0.001*(fingerX-x)*pow(d, ww)*w;
-    yv += 0.001*(fingerY-y)*pow(d, ww)*w;
-    float drg = (noise(x/20+492,y/20+490,t*5.2)-0.5)/300 + 1.05;
-    xv /= drg;
-    yv /= drg;
-    xv += noise(x/20,y/20,t)-0.5;
-    yv += noise(x/20,y/20+424,t)-0.5;
-    x += xv;
-    y += yv;
-    line(x,y,x-xv/3,y-yv/3);
-  }
-}*/
 class Textura {
   float z = random(-100, 100);
   float phi = random(TWO_PI);
   float theta = asin(z/100);
-  float largo = random(0.5, 1.2);
+  float largo = random(0.5, 1.6);
 
   Textura() {
     //contorno esfera
@@ -604,11 +551,54 @@ class Textura {
     phi = random (TWO_PI);
     theta = asin(z/100);
     //largo textura
-    largo = random (0.5, 1.2);  
+    largo = random (0.5, 1.6);  
+    
+    if (nota == 1){
+       largo = random (0.5, 1.6);
+       theta = asin(z/100);
+    }
+    if (nota == 2){
+      largo = random (0.5, 1.5);
+      theta = asin(z/200);
+    }
+    if (nota == 3){
+       largo = random (0.5, 1.4);
+       theta = asin(z/300);
+    }
+    if (nota == 4){
+      largo = random (0.5, 1.3); 
+      theta = asin(z/400);
+    }
+    if (nota == 5){
+       largo = random (0.5, 1.2);
+       theta = asin(z/500);
+    }
+    if (nota == 6){
+      largo = random (0.5, 1.1);
+      theta = asin(z/700);
+    }
+    if (nota == 7){
+       largo = random (0.5, 1);
+       theta = asin(z/1000);
+    }
+    if (nota == 8){
+      largo = random (0.5, 0.8);
+      theta = asin(z/700);
+    }
+    if (nota == 9){
+      largo = random (0.5, 0.6);
+      theta = asin(z/700);
+    }
+    if (nota == 10){
+      largo = random (0.5, 0.5);
+      theta = asin(z/700);
+    }
+    
   }
 
   void dibujar() {
     //ruido esfera
+    
     float off = (noise(millis() * 0.0005, sin(phi))-0.5) * 0.3;
     float offb = (noise(millis() * 0.0007, sin(z) * 0.01)-0.5) * 0.3;
 
@@ -628,23 +618,30 @@ class Textura {
     float yb = yo * largo;
     float zb = zo * largo;
 
-//cuando mouse vaya abajo se meten los puntos a cero
-if (movimientoY < 1) {
+//CUANDO NO HAY MANO LOS PUNTOS VAN A 0
+
+if (val6 == 0) {
     strokeWeight(1);
     beginShape(POINTS);
-    stroke(40);
+    stroke(53);
     vertex(x, y, z);
-    stroke(150);
+    stroke(200);
     vertex(xb, yb, zb);
     endShape();
 } else {
-    strokeWeight(1);
-    beginShape(POINTS);
-    stroke(40);
-    vertex(x, y, z);
-    stroke(150);
-    vertex(xb, yb, zb);
-    endShape();
+      /*int strokeP = nota * 10;
+      float strokePm = map(strokeP, 0, 1000, 0, 255);
+      int strokeE = -nota * 10;
+      float strokeEm = map(strokeE, 0, 1000, 0, 255);*/
+      
+      strokeWeight(1);
+      beginShape(POINTS);
+      stroke(53);
+      vertex(x, y, z);
+      stroke(200);
+      vertex(xb, yb, zb);
+      endShape();
+    
 }
   }
 }
