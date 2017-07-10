@@ -286,7 +286,7 @@ void draw() {
       t += 0.01;*/
  
   //caracteristicas esfera
-  fill(0);
+  fill(mouseY/2);
   stroke(255);
   //sphereDetail(1);
   sphere(100);
@@ -303,7 +303,7 @@ void draw() {
       nota = 1;
       player1.play();
       player1 = minim.loadFile("esfera1.wav");
-      sphereDetail(1);
+      sphereDetail(10);
       println("1");
      }
   //player1 = minim.loadFile("esfera1.wav");
@@ -312,7 +312,7 @@ void draw() {
       nota = 2;
       player2.play();
       player2 = minim.loadFile("esfera2.wav");
-        sphereDetail(2);
+        sphereDetail(9);
       println("2");
      }
   //player2 = minim.loadFile("esfera2.wav");
@@ -322,7 +322,7 @@ void draw() {
         nota = 3;
         player3.play();
         player3 = minim.loadFile("esfera3.wav");
-          sphereDetail(3);
+          sphereDetail(8);
         println("3");
        }
   
@@ -335,7 +335,7 @@ void draw() {
       nota = 4;
       player4.play();
       player4 = minim.loadFile("esfera4.wav");
-        sphereDetail(4);
+        sphereDetail(7);
       println("4");
      }
    //player4.play();
@@ -348,7 +348,7 @@ void draw() {
       nota = 5;
       player5.play();
       player5 = minim.loadFile("esfera5.wav");
-        sphereDetail(5);
+        sphereDetail(6);
       println("5");
      }
    //player5.play();
@@ -362,7 +362,7 @@ void draw() {
       nota = 6;
       player6.play();
       player6 = minim.loadFile("esfera6.wav");
-        sphereDetail(6);
+        sphereDetail(5);
       println("6");
      }
    //player6 = minim.loadFile("esfera6.wav");
@@ -376,7 +376,7 @@ void draw() {
       nota = 7;
       player7.play();
       player7 = minim.loadFile("esfera7.wav");
-        sphereDetail(7);
+        sphereDetail(4);
       println("7");
      }
    //player7 = minim.loadFile("esfera7.wav");
@@ -391,7 +391,7 @@ void draw() {
       nota = 8;
       player8.play();
       player8 = minim.loadFile("esfera8.wav");
-        sphereDetail(8);
+        sphereDetail(3);
       println("8");
      }
    //player8 = minim.loadFile("esfera8.wav");
@@ -407,7 +407,7 @@ void draw() {
       nota = 9;
       player9.play();
       player9 = minim.loadFile("esfera9.wav");
-        sphereDetail(9);
+        sphereDetail(2);
       println("9");
      }
    //player9 = minim.loadFile("esfera9.wav");
@@ -424,7 +424,7 @@ void draw() {
       nota = 10;
       player10.play();
       player10 = minim.loadFile("esfera10.wav");
-        sphereDetail(10);
+        sphereDetail(1);
       println("10");
      }
     }
@@ -565,112 +565,6 @@ void draw() {
 
 }
 
-//VOLVER A REPRODUCRI AUDIO
-
-/*void mousePressed() {
- if (movimientoY > 0  || movimientoY > 53) {
-    player1 = minim.loadFile("esfera1.wav");
- } if (movimientoY > 106) {
-    player2 = minim.loadFile("esfera2.wav");
-    player1.close();
- } if (movimientoY > 159) {
-    player3 = minim.loadFile("esfera3.wav");
-    player1.close();
-    player2.close();
- } if (movimientoY > 212) {
-    player4 = minim.loadFile("esfera4.wav");
-   player1.close();
-   player2.close();
-   player3.close();
- } if (movimientoY > 265) {
-    player5 = minim.loadFile("esfera5.wav");
-    player1.close();
-   player2.close();
-   player3.close();
-   player4.close();
- } if (movimientoY > 318) {
-    player6 = minim.loadFile("esfera6.wav");
-   player1.close();
-   player2.close();
-   player3.close();
-   player4.close();
-   player5.close();
- } if (movimientoY > 371) {
-    player7 = minim.loadFile("esfera7.wav");
-   player1.close();
-   player2.close();
-   player3.close();
-   player4.close();
-   player5.close();
-   player6.close();
- } if (movimientoY > 424) {
-    player8 = minim.loadFile("esfera8.wav");
-   player1.close();
-   player2.close();
-   player3.close();
-   player4.close();
-   player5.close();
-   player6.close();
-   player7.close();
- } if (movimientoY > 477) {
-    player9 = minim.loadFile("esfera9.wav");
-   player1.close();
-   player2.close();
-   player3.close();
-   player4.close();
-   player5.close();
-   player6.close();
-   player7.close();
-   player8.close();
- } if (movimientoY > 530) {
-    player10 = minim.loadFile("esfera10.wav");
-   player1.close();
-   player2.close();
-   player3.close();
-   player4.close();
-   player5.close();
-   player6.close();
-   player7.close();
-   player8.close();
-   player9.close();
- }
-}*/
-
-//Creamos la clase
-/*class Vol {
-  float x;
-  float y;
-  float xv;
-  float yv;
-  float w;
-  float ww;
-  float gu;
-  float hu;
-  Vol(int x2, int y2) {
-    x = random(width);
-    y = random(height);
-    w = random(1,1);
-    ww = random(-1,1);
-    gu = x2;
-    hu = y2;
-  }
-  
-  void update(float fingerX, float fingerY) {
-    stroke(255, 255, 255, 30);
-    float m = 100;
-    float d = dist(width/m,height/m,mouseX/m,movimientoY/m);
-    xv += 0.001*(fingerX-x)*pow(d, ww)*w;
-    yv += 0.001*(fingerY-y)*pow(d, ww)*w;
-    float drg = (noise(x/20+492,y/20+490,t*5.2)-0.5)/300 + 1.05;
-    xv /= drg;
-    yv /= drg;
-    xv += noise(x/20,y/20,t)-0.5;
-    yv += noise(x/20,y/20+424,t)-0.5;
-    x += xv;
-    y += yv;
-    line(x,y,x-xv/3,y-yv/3);
-  }
-}*/
 class Textura {
   float z = random(-100, 100);
   float phi = random(TWO_PI);
@@ -742,7 +636,7 @@ class Textura {
 if (fueraManoY) {
     strokeWeight(1);
     beginShape(POINTS);
-    stroke(40);
+    stroke(53);
     vertex(x, y, z);
     stroke(200);
     vertex(xb, yb, zb);
@@ -755,7 +649,7 @@ if (fueraManoY) {
       
       strokeWeight(1);
       beginShape(POINTS);
-      stroke(30);
+      stroke(53);
       vertex(x, y, z);
       stroke(200);
       vertex(xb, yb, zb);
