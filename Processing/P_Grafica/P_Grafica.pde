@@ -296,16 +296,20 @@ void draw() {
   if (movimientoY > 0  || movimientoY > 53) {
     if (nota != 1 && movimientoY <= 106){
       nota = 1;
-      player1.play();
-      player1 = minim.loadFile("esfera1.wav");
+      if (!player1.isPlaying()){
+        player1 = minim.loadFile("esfera1.wav");
+        player1.play();
+      }
       sphereDetail(10);
       //println("1");
      }
   } if (movimientoY > 106 && movimientoY <= 159) {
       if (nota != 2){
       nota = 2;
-      player2.play();
-      player2 = minim.loadFile("esfera2.wav");
+       if (!player2.isPlaying()){
+        player2 = minim.loadFile("esfera2.wav");
+        player2.play();
+       }
       sphereDetail(9);
       //println("2");
      }
@@ -313,8 +317,10 @@ void draw() {
 } if (movimientoY > 159 && movimientoY <= 212) {
     if (nota != 3){
         nota = 3;
-        player3.play();
-        player3 = minim.loadFile("esfera3.wav");
+        if (!player3.isPlaying()){
+          player3 = minim.loadFile("esfera3.wav");
+          player3.play();
+        }
         sphereDetail(8);
         //println("3");
        }
@@ -323,8 +329,11 @@ void draw() {
   
       if (nota != 4){
       nota = 4;
-      player4.play();
-      player4 = minim.loadFile("esfera4.wav");
+      
+      if (!player4.isPlaying()){
+        player4 = minim.loadFile("esfera4.wav");
+        player4.play();
+      }
       sphereDetail(7);
       //println("4");
      }
@@ -332,8 +341,11 @@ void draw() {
 } if (movimientoY > 265 && movimientoY <= 318) {
     if (nota != 5){
       nota = 5;
-      player5.play();
-      player5 = minim.loadFile("esfera5.wav");
+      
+      if (!player5.isPlaying()){
+        player5 = minim.loadFile("esfera5.wav");
+        player5.play();
+      }
       sphereDetail(6);
       //println("5");
      }
@@ -341,8 +353,11 @@ void draw() {
 } if (movimientoY > 318 && movimientoY <= 371) {
    if (nota != 6){
       nota = 6;
-      player6.play();
-      player6 = minim.loadFile("esfera6.wav");
+      
+      if (!player6.isPlaying()){
+        player6 = minim.loadFile("esfera6.wav");
+        player6.play();
+      }
       sphereDetail(5);
       //println("6");
      }
@@ -350,8 +365,10 @@ void draw() {
 } if (movimientoY > 371 && movimientoY <= 424) {
    if (nota != 7){
       nota = 7;
-      player7.play();
-      player7 = minim.loadFile("esfera7.wav");
+      if (!player7.isPlaying()){
+        player7 = minim.loadFile("esfera7.wav");
+        player7.play();
+      }
       sphereDetail(4);
       //println("7");
      }
@@ -359,8 +376,11 @@ void draw() {
 } if (movimientoY > 424 && movimientoY <= 477) {
    if (nota != 8){
       nota = 8;
-      player8.play();
-      player8 = minim.loadFile("esfera8.wav");
+      
+      if (!player8.isPlaying()){
+        player8 = minim.loadFile("esfera8.wav");
+        player8.play();
+      }
       sphereDetail(3);
       //println("8");
      }
@@ -368,8 +388,10 @@ void draw() {
 } if (movimientoY > 477 && movimientoY <= 510) {
    if (nota != 9){
       nota = 9;
-      player9.play();
-      player9 = minim.loadFile("esfera9.wav");
+      if (!player9.isPlaying()){
+        player9 = minim.loadFile("esfera9.wav");
+        player9.play();
+      }
       sphereDetail(2);
       //println("9");
      }
@@ -377,8 +399,10 @@ void draw() {
 } if (movimientoY > 510) {
    if (nota != 10){
       nota = 10;
-      player10.play();
-      player10 = minim.loadFile("esfera10.wav");
+      if (!player10.isPlaying()){
+        player10 = minim.loadFile("esfera10.wav");
+        player10.play();
+      }
       sphereDetail(1);
       //println("10");
      }
